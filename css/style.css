@@ -1,0 +1,287 @@
+/* original code by http://templates.tupence.co.uk  */
+
+/*****************
+RESETS AND HTML5
+*****************/
+/***** reset browsers margins, padding and borders - add any you require ****/
+html, body, div, h1, h2, h3, h4, h5, h6, p, a, img, ul, li, header, nav, section, hr, figure, figcaption, article, footer, form, input{
+margin:0;
+padding:0;
+border:0;
+}
+/***** render html5 elements as block in older browsers ****/
+header, footer, section, nav, article, figure, figcaption  {/*add any html5 elements you use*/
+display: block;
+}
+.clear{ /*one way of clearing floats*/
+clear:both;
+}
+/**************
+GENERAL LAYOUT
+***************/
+body{
+background:#f0f3f9;
+color:#3f3f3f;
+font-family: 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif;
+font-size:.875em;
+text-align:center;
+}
+#wrapper{
+width:980px; /*fixed width of 980px will fit screen resolution width of 1024px & above without horizontal scrolling*/ 
+margin:0 auto; /*centres the wrapper*/
+padding-top:20px;
+background:#fff;
+/*add a border to the left and right sides*/
+border-left:solid 1px #dfe2e8;
+border-right:solid 1px #dfe2e8;
+/*add a shadow to the left and right sides*/
+-webkit-box-shadow: 6px 0px 15px -7px #888, -6px 0px 15px -7px #888; /*older Chrome and Safari*/
+-moz-box-shadow: 6px 0px 15px -7px #888, -6px 0px 15px -7px #888; /*older Firefox*/
+box-shadow: 6px 0px 15px -7px #888, -6px 0px 15px -7px #888; /*latest browsers*/
+}
+/*************
+GENERAL FONTS
+**************/
+p{
+font-size:1em;
+line-height:1.5em;
+margin-bottom:12px;
+}
+ul{
+margin-left:15px;
+margin-bottom:12px;
+}
+li{
+font-size:1em;
+}
+h1, h2, h3, h4, h5{
+font-family: 'Oswald', sans-serif; /*Oswald is available at http://www.google.com/webfonts/specimen/Oswald*/
+font-weight:300;
+color:#315863;
+letter-spacing:0.05em;
+}
+h1{
+font-size:2.2em;
+text-shadow: 0px 1px 4px #676767; /*note that text-shadow doesn't work in Internet Explorer 9 or earlier*/
+}
+h2{
+font-size:2em;
+text-shadow: 0px 1px 1px #3d3d3d;
+}
+h3{
+font-size:1.5em;
+}
+h4{
+font-size:1.3em;
+}
+h5{
+font-size:1.1em;
+}
+h6{
+color:#000000;
+font-size:2em;
+font-family:'Helvetica Neue';
+text-align: center;	
+}
+/**LINKS**/
+a:link{
+color:#633531;
+}
+a:visited{
+color:#555433;
+}
+a:hover, a:focus{
+color:#d67025;
+}
+/**STYLE HORIZONTAL RULE**/
+hr{
+margin:30px 0;
+border: 0;
+height: 1px;
+background: #095682;/*fallback background colour for browsers that don't support gradients*/
+/*give the hr a gradient to make it appear tappered*/
+background: -webkit-linear-gradient(left, #e1e1e1, #b5b5b5, #095682, #b5b5b5, #e1e1e1); /*Chrome & Safari*/
+background: -moz-linear-gradient(left, #e1e1e1, #b5b5b5, #095682, #b5b5b5, #e1e1e1); /*Firefox*/
+background: -o-linear-gradient(left, #e1e1e1, #b5b5b5, #095682, #b5b5b5, #e1e1e1); /*Opera*/
+background: -ms-linear-gradient(left, #e1e1e1, #b5b5b5, #095682, #b5b5b5, #e1e1e1); /*IE10 proposed*/
+background: linear-gradient(left, #e1e1e1, #b5b5b5, #095682, #b5b5b5, #e1e1e1);/*W3C proposed*/
+clear:both;
+}
+
+/**********
+NAVIGATION
+**********/
+/**TOP NAVIGATION BAR**/
+nav#topbar{
+width:90%;
+right:0;
+overflow:hidden; /*clears the float used at nav#topbar li*/
+margin:0 auto; /*centres the navigation bar*/
+text-align:center;
+/*curved corners*/
+-moz-border-radius:5px;/*older Firefox*/
+-webkit-border-radius:5px;/*older Safari and Chrome*/
+border-radius:5px;/*modern browsers*/
+/*give the bar a gradient background*/
+background:#7db9e8;
+background: -o-linear-gradient(#1E5799, #7db9e8, #1E5799);
+background: -moz-linear-gradient(#1E5799, #7db9e8, #1E5799);
+background: -webkit-linear-gradient(#1E5799, #7db9e8, #1E5799);
+background: -ms-linear-gradient(#1E5799, #7db9e8, #1E5799);
+-pie-background: linear-gradient(#1E5799, #7db9e8, #1E5799);
+/*add a drop shadow*/
+-webkit-box-shadow: 0 0 5px rgba(0,0,0, .65); 
+-moz-box-shadow: 0 0 5px rgba(0,0,0, .65); 
+box-shadow: 0 0 5px rgba(0,0,0, .65);
+}
+nav#topbar ul{
+width:100%;
+margin:0 auto;
+list-style-type:none; /*removes the bullet point*/
+text-align:center;
+}
+nav#topbar li{
+float:left; /*places the list items in a horizontal line*/
+padding:10px 0px;
+margin:0;
+border-right:1px solid #4e6666;
+font-family: 'Droid Sans', sans-serif; /*Droid Sans is available at http://www.google.com/webfonts/specimen/Droid+Sans */
+font-size:1em;
+color:#fff;
+}
+nav#topbar li:first-child{/*adds a left border to the first item in the list*/
+border-left:1px solid #4e6666;
+}
+nav#topbar a{
+padding:10px 20px;
+color:#fff;
+text-decoration:none;
+display:inline;
+}
+nav#topbar a:hover, nav#topbar a:focus{
+background:#AAAAAA;
+background: -o-linear-gradient(#464646, #AAAAAA, #464646);
+background: -webkit-linear-gradient(#464646, #AAAAAA, #464646);
+background: -moz-linear-gradient(#464646, #AAAAAA, #464646);
+background: -ms-linear-gradient(#464646, #AAAAAA, #464646);
+background: linear-gradient(#464646, #AAAAAA, #464646);
+}
+/********
+HEADER
+********/
+header#mobile{
+display:none;
+}
+header#main{
+width:100%;
+overflow:hidden; /*clears the floats used in header*/
+margin:30px 10px 20px 10px;
+}
+/**SITE NAME**/
+#masthead{
+width:350px; /*If you change this value you must alter the width nav#social by the same amount*/
+float:left;
+}
+#masthead h1 a{
+color:#315863;
+text-decoration:none;
+}
+#masthead h1 a:hover, #masthead h1 a:focus{
+color:#f68c3e;
+}
+/**SOCIAL NETWORKING LINKS**/
+nav#social{
+width:550px; /*If you change this value you must alter the width of masthead by the same amount*/
+float:right;
+margin-right:20px;
+}
+nav#social ul{
+list-style-type:none; /*remove the bullet point*/
+float:right;
+margin-right:40px;
+}
+nav#social li{
+font-family: 'Droid Sans', sans-serif; /*Droid Sans is available at http://www.google.com/webfonts/specimen/Droid+Sans */
+float:left; /*places the list items in a
+
+
+/**********
+CONTENT
+***********/
+#content{
+text-align:left;
+padding:20px;
+}
+/*****INTRO TEXT *****/
+#intro{
+width:700px;
+margin:0 auto; /*centres the intro*/
+margin-top:-20px;
+text-align:center;
+}
+#intro p{
+margin:0 0 10px 0;
+padding:5px;
+font-size: 1.15em;
+line-height: 1.6em;
+font-family: 'Droid Sans', sans-serif; /*Droid Sans is available at http://www.google.com/webfonts/specimen/Droid+Sans */
+font-weight:300;
+text-align:justify;
+}
+/*****BACKGROUND IMAGE AND TEXT*****/
+#imagebg{
+width:100%;
+background:url(imagebg01.jpg) right no-repeat;
+overflow:hidden; /*clears the float used in #imagebg*/
+height:249px; /*height of the image used*/
+margin:0;
+padding:0;
+}
+#imagebg p{
+margin-top:70px;
+width:320px; /*less than 980px - (width of imagebg01.jpg)*/
+float:left;
+}
+/*****MEDIA (LINKS TO VIDEOS & GALLERIES*****/
+#media{
+width:720px; /*need by IE to clear the floats, change as required*/
+overflow:hiddden;/*clears the floats*/
+text-align:center;
+margin:0 auto; /*centres #media*/
+}
+#media h3{
+margin-top:20px;
+}
+#media figure{
+float:left;
+width:160px; /*width of the thumbnails used to link to the galleries and videos*/
+margin:10px 30px;
+padding: 6px 8px 10px 8px;
+border:1px solid #ddd;
+/*add a drop shadow*/
+-webkit-box-shadow: 0 8px 4px -4px #838383;/*old Safari and Chrome*/
+-moz-box-shadow: 0 8px 4px -4px #838383; /*older Firefox*/
+box-shadow: 0 8px 4px -4px #838383; /*latest browsers*/
+}
+#media figcaption{
+text-align:center;
+font-family: 'Happy Monkey', cursive; /*Happy Monkey is available at http://www.google.com/webfonts/specimen/Happy+Monkey */
+font-size:.9em;
+color:#454f40;
+letter-spacing:0.09em;
+}
+#media a:link, #media a:visited{
+text-decoration:none;
+color:#454f40;
+}
+#media a:hover{
+color:#f68c3e;
+}
+#media figure:hover{
+cursor:pointer; /*changes cursor to a hand on hover*/
+background:#eaf0f1;
+-webkit-box-shadow: 0 6px 4px -4px #838383;
+-moz-box-shadow: 0 6px 4px -4px #838383;
+box-shadow: 0 6px 4px -4px #838383;
+}
+

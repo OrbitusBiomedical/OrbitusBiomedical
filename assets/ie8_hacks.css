@@ -1,0 +1,5 @@
+/**USE CSS3PIE TO MAKE SOME HTML5 ELEMENTS WORK IN IE8 AND EARLIER**/
+#wrapper, #media figure, footer input#term{
+behavior: url(assets/pie/PIE.htc); 
+position:relative;
+}

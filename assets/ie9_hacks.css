@@ -1,0 +1,20 @@
+/**USE CSS3PIE TO MAKE SOME HTML5 ELEMENTS WORK IN IE8 AND EARLIER**/
+hr, nav#topbar, footer input#searchbutton{
+behavior: url(assets/pie/PIE.php); 
+position:relative;
+}
+hr{
+-pie-background: linear-gradient(left, #e1e1e1, #b5b5b5, #095682, #b5b5b5, #e1e1e1);
+}
+nav#topbar{
+-pie-background: linear-gradient(#719daf, #466f7f, #719daf);
+}
+nav#topbar li:hover, nav#topbar li:focus{
+-pie-background: linear-gradient(#464646, #191919, #464646);
+}
+footer input#searchbutton{ 
+-pie-background: linear-gradient(#464646, #191919, #464646);
+}
+footer input#searchbutton:hover, footer input#searchbutton:focus{
+-pie-background: linear-gradient(#719daf, #466f7f, #719daf);
+}

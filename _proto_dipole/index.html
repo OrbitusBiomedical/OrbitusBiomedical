@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<title>OrbitusBiomedical - ∂ipole</title>
+		<style>
+			html, body {
+				height: 100%;
+			}
+
+			body {
+				background-color: #050505;
+
+				background: rgb(43,45,48); /* Old browsers */
+				background: -moz-radial-gradient(center, ellipse cover,  rgba(43,45,48,1) 0%, rgba(0,0,0,1) 100%); /* FF3.6+ */
+				background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(43,45,48,1)), color-stop(100%,rgba(0,0,0,1))); /* Chrome,Safari4+ */
+				background: -webkit-radial-gradient(center, ellipse cover,  rgba(43,45,48,1) 0%,rgba(0,0,0,1) 100%); /* Chrome10+,Safari5.1+ */
+				background: -o-radial-gradient(center, ellipse cover,  rgba(43,45,48,1) 0%,rgba(0,0,0,1) 100%); /* Opera 12+ */
+				background: -ms-radial-gradient(center, ellipse cover,  rgba(43,45,48,1) 0%,rgba(0,0,0,1) 100%); /* IE10+ */
+				background: radial-gradient(ellipse at center,  rgba(43,45,48,1) 0%,rgba(0,0,0,1) 100%); /* W3C */
+				
+				margin: 0;
+				font-family: Arial;
+				overflow: hidden;
+			}
+
+			a {
+				color: #ffffff;
+			}
+
+			#outputcontent {
+				color: #ffffff;
+			}
+
+			#message {
+				color: #ffffff;
+			}
+
+			#info {
+				position: absolute;
+				top: 0px;
+				width: 100%;
+				color: #ffffff;
+				padding: 5px;
+				font-family: Monospace;
+				font-size: 13px;
+				font-weight: bold;
+				text-align: center;
+				z-index: 1;
+			}
+
+			#menu {
+				position: absolute;
+				bottom: 20px;
+				width: 100%;
+				text-align: center;
+				padding: 0;
+				margin: 0;
+			}
+
+			#topmenu {
+				position: absolute;
+				top: 10px;
+				right: 10px;
+				width: 100%;
+				text-align: right;
+				padding: 0;
+				margin: 0;
+				z-index: 1;
+			}
+
+			button {
+				color: rgb(255,255,255);
+				background: transparent;
+				border: 0px;
+				padding: 5px 10px;
+				cursor: pointer;
+			}
+			button:hover {
+				background-color: rgba(0,255,255,0.5);
+			}
+			button:active {
+				color: #000000;
+				background-color: rgba(0,255,255,1);
+			}
+
+			.bond {
+				width: 5px;
+				height: 10px;
+				background: #eee;
+				display: block;
+			}
+
+
+			#searchContainer {
+				position: absolute;
+				top: 20px;
+				left: 20px;'''
+				margin:20px;
+				z-index: 100;
+
+			}
+
+			/* Style the search input field. */
+			#field {
+				float:left; 
+				width:200px; 
+				height:27px; 
+				line-height:27px;
+				text-indent:10px; 
+				font-family:arial, sans-serif; 
+				font-size:1em; 
+				color:#333; 
+				background: #fff; 
+				border:solid 1px #d9d9d9; 
+				border-top:solid 1px #c0c0c0; 
+				border-right:none;
+			}
+
+			/* Style the "X" text button next to the search input field */
+			#delete {
+				float:left; 
+				width:16px;
+				height:27px; 
+				line-height:27px; 
+				margin-right:15px; 
+				padding:10 10px 0 10px;
+				font-family: "Lucida Sans", "Lucida Sans Unicode",sans-serif;
+				font-size:22px; 
+				background: #fff;  
+				border:solid 1px #d9d9d9; 
+				border-top:solid 1px #c0c0c0; 
+				border-left:none;
+			}
+			/* Set default state of "X" and hide it */
+			#delete #x {
+				color:#A1B9ED; 
+				cursor:pointer;
+				display:none;
+			}
+			/* Set the hover state of "X" */
+			#delete #x:hover {
+				color:#36c;
+			}
+			/* Syle the search button. Settings of line-height, font-size, text-indent used to hide submit value in IE */
+			#submitButton {
+				cursor:pointer; 
+				width:70px; 
+				height: 31px; 
+				line-height:0; 
+				font-size:0; 
+				text-indent:-999px;
+				color: transparent;  
+				background: url(ico-search.png) no-repeat #4d90fe center; 
+				border: 1px solid #3079ED; 
+				-moz-border-radius: 2px; 
+				-webkit-border-radius: 2px; 
+			}
+			/* Style the search button hover state */
+			#submit:hover {
+				background: url(ico-search.png) no-repeat center #357AE8; 
+				border: 1px solid #2F5BB7;
+			}
+			/* Clear floats */
+			.fclear {clear:both}
+			.autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
+			.autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
+			.autocomplete-selected { background: #f0f0f0; }
+			.autocomplete-suggestions strong { font-weight: normal; color: #3399ff; }
+
+			#searchfield { display: block; width: 100%; text-align: center; margin-bottom: 35px; }
+			 
+			#searchfield form {
+			  display: inline-block;
+			  background: #eeefed;
+			  padding: 0;
+			  margin: 0;
+			  padding: 5px;
+			  border-radius: 3px;
+			  margin: 5px 0 0 0;
+			}
+			#searchfield form .biginput {
+			  width: 600px;
+			  height: 40px;
+			  padding: 0 10px 0 10px;
+			  background-color: #fff;
+			  border: 1px solid #c8c8c8;
+			  border-radius: 3px;
+			  color: #aeaeae;
+			  font-weight:normal;
+			  font-size: 1.5em;
+			  -webkit-transition: all 0.2s linear;
+			  -moz-transition: all 0.2s linear;
+			  transition: all 0.2s linear;
+			}
+			#searchfield form .biginput:focus {
+			  color: #858585;
+			}
+
+			#img { width: 25px; height: 25px; padding-right: 10px;}
+			.ui-autocomplete > li { height: 40px; }
+
+
+
+
+
+			* {
+				margin:0;
+				padding:0;
+				box-sizing:border-box;
+				-webkit-box-sizing:border-box;
+				-moz-box-sizing:border-box;
+				-webkit-font-smoothing:antialiased;
+				-moz-font-smoothing:antialiased;
+				-o-font-smoothing:antialiased;
+				font-smoothing:antialiased;
+				text-rendering:optimizeLegibility;
+			}
+			body {
+				font:400 12px/1.625 "Helvetica Neue", Helvetica, Arial, sans-serif;
+				color:#444;
+				background:#ffffff;
+				background-image:linear-gradient(left , #000000 0%, #000000 52%, #000000 100%);
+				background-image:-moz-linear-gradient(left , #000000 0%, #000000 52%, #000000 100%);
+				background-image:-webkit-linear-gradient(left , #000000 0%, #000000 52%, #000000 100%);
+			}
+			#float_background
+			{
+				background-color:#000000;
+				opacity:0.5;
+
+				position:fixed;
+			    top:-30px;
+			    right:400px;
+			    float:right;
+			}
+			#float{
+			    position:fixed;
+			    top:-30px;
+			    right:400px;
+			    float:right;
+			}
+
+			.wrapper {
+				max-width:400px;
+				min-width:400px;
+				position:absolute;
+				width:95%;
+				right:100;
+				
+				
+			}
+			#contact-form input[type="text"],
+			#contact-form input[type="email"],
+			#contact-form input[type="tel"],
+			#contact-form input[type="url"],
+			#contact-form textarea,
+			#contact-form button[type="submit"] {
+				font:400 12px/12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+			}
+			#contact-form {
+				text-shadow:0 1px 0 #FFF;
+				border-radius:4px;
+				-webkit-border-radius:4px;
+				-moz-border-radius:4px;
+				background:#F7F7F7;
+
+				padding:25px;
+			}
+			#contact-form h3 {
+				color:#505050;
+				display:block;
+				font-size:22px;
+				word-wrap: break-word;
+			}
+			#contact-form h4 {
+				margin:5px 0 15px;
+				display:block;
+				font-size:13px;
+			}
+			#contact-form label span {
+				cursor:pointer;
+				color:#606060;
+				display:block;
+				margin:5px 0;
+				font-weight:900;
+			}
+			#contact-form input[type="text"],
+			#contact-form input[type="email"],
+			#contact-form input[type="tel"],
+			#contact-form input[type="url"],
+			#contact-form textarea {
+				width:100%;
+				box-shadow:inset 0 1px 2px #DDD, 0 1px 0 #FFF;
+				-webkit-box-shadow:inset 0 1px 2px #DDD, 0 1px 0 #FFF;
+				-moz-box-shadow:inset 0 1px 2px #DDD, 0 1px 0 #FFF;
+				border:1px solid #CCC;
+				background:#FFF;
+				margin:0 0 5px;
+				padding:10px;
+				border-radius:5px;
+			}
+			#contact-form input[type="text"]:hover,
+			#contact-form input[type="email"]:hover,
+			#contact-form input[type="tel"]:hover,
+			#contact-form input[type="url"]:hover,
+			#contact-form textarea:hover {
+				-webkit-transition:border-color 0.3s ease-in-out;
+				-moz-transition:border-color 0.3s ease-in-out;
+				transition:border-color 0.3s ease-in-out;
+				border:1px solid #AAA;
+			}
+			#contact-form textarea {
+				height:100px;
+				max-width:100%;
+			}
+			#contact-form button[type="submit"] {
+				cursor:pointer;
+				width:100%;
+				border:none;
+				background:#693e5a;
+				background-image:linear-gradient(bottom, #917AE6 10%, #96236E 50%);
+				background-image:-moz-linear-gradient(bottom, #917AE6 10%, #96236E 50%);
+				background-image:-webkit-linear-gradient(bottom, #917AE6 10%, #96236E 50%);
+				color:#FFF;
+				margin:0 0 5px;
+				padding:10px;
+				border-radius:5px;
+			}
+			#contact-form button[type="submit"]:hover {
+				background-image:linear-gradient(bottom, #855501 0%, #000470 52%);
+				background-image:-moz-linear-gradient(bottom, #855501 0%, #000470 52%);
+				background-image:-webkit-linear-gradient(bottom, #855501 0%, #000470 52%);
+				-webkit-transition:background 0.3s ease-in-out;
+				-moz-transition:background 0.3s ease-in-out;
+				transition:background-color 0.3s ease-in-out;
+			}
+			#contact-form button[type="submit"]:active {
+				box-shadow:inset 0 1px 3px rgba(0,0,0,0.5);
+			}
+			#contact-form input:focus,
+			#contact-form textarea:focus {
+				outline:0;
+				border:1px solid #999;
+			}
+			::-webkit-input-placeholder {
+			    color:#888;
+			}
+			:-moz-placeholder {
+			    color:#888;
+			}
+			::-moz-placeholder {
+			    color:#888;
+			}
+			:-ms-input-placeholder {
+			    color:#888;
+			}
+
+
+		</style>
+	</head>
+	<body>
+		<script src="libraries/three.min.js"></script>
+		<script src="js/controls/TrackballControls.js"></script>
+		<script src="js/renderers/CSS3DRenderer.js"></script>
+		<script src="js/loaders/PubChem_3DJSONLoader.js"></script>
+		<!--<script src="js/headtrackr.js"></script>		
+		<script src="js/video-speech.js" defer></script> 
+		<script src="js/loaders/PDBLoader.js"></script>
+		-->
+		<script src="js/jquery-2.1.0.js" ></script>
+		<script src="js/jquery.blockUI.js" ></script>
+		<script src="js/jquery.autocomplete.js"> </script>
+		<script src="js/molecules-autocomplete.js"> </script>
+
+
+		<!--Heavtracking video box and canvas elements-->
+		<canvas id="compare" width="320" height="240" style="display:none"></canvas>
+		<video id="vid" autoplay loop></video>
+		
+		<div id="searchContainer">
+			<form id="pubChemSearchForm" onSubmit="return checkField()">
+				<input id="field" name="field" type="text" />
+				<div id="delete"><span id="x">x</span></div>
+				<input id="submitButton" name="submit" type="button" value="Search" />
+				<div id="outputbox">
+			    	<p id="outputcontent">Search for compunds on PubChem</p>
+				</div>
+			</form>
+		</div>
+		<!--<div class="rec-status">Recogniser status:<span id="recStatus">not recognising</span></div>-->
+		<div id="container"></div>
+		<div id="info"><a href="http://orbitusrobotics.com" target="_blank">∂ipole</a></div>
+		
+		<div id="float" >
+			<div id="float_background">	
+			</div>
+			
+		    <div id="ContactWrapper" class="wrapper">
+				<div id="main" style="padding:50px 10px 0 0;">
+				<!-- Form -->
+				<form id="contact-form" action="/" method="post">
+					
+					<h3><label id="MoleculeName">Water</label></h3>
+					<h4>Molecular Formula: <label id="MoleculeFormula">H2O</label></h4>
+					<div>
+						<label>
+							<span>CID: <label id="MoleculeCID">0000</label></span>
+							
+						</label>
+					</div>
+					<div>
+						<label>
+							<span>Molecular Weight: <label id="MolecularWeight">18.010565</label> g/mol</span>
+							
+						</label>
+					</div>
+					<div>
+						<label>
+							<span>RotatableBond: <label id="RotatableBond">1</label></span>
+							
+						</label>
+					</div>
+					<div>
+						<label>
+							<span>Hydrogen Bond Acceptor: <label id="HydrogenBondAcceptor">0</label></span>
+						</label>
+					</div>
+					<div>
+						<label>
+							<span>Hydrogen Bond Donor: <label id="HydrogenBondDonor">0</label></span>
+							
+						</label>
+					</div>
+					<div>
+						
+					</div>
+				</form>
+				<!-- /Form -->
+				
+				</div>
+			</div>
+		</div>
+
+		<!--<div id="message" class="msg" data-state="hidden">This browser doesn't support the WebKit Web Speech <abbr title="Application Programming Interface">API</abbr>. You need the latest version of Chrome. Sorry!</div>
+		-->
+		<script>
+
+			//https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/ampicillin/JSON?record_type=3d
+			function setCookie(cname,cvalue,exdays)
+			{
+				var d = new Date();
+				d.setTime(d.getTime()+(exdays*24*60*60*1000));
+				var expires = "expires="+d.toGMTString();
+				document.cookie = cname + "=" + cvalue + "; " + expires;
+			} 
+
+
+			function pubChem_compoundSearchByName( searchTerm)
+			{
+					console.log('setting cookie');
+
+
+					document.cookie = "searchTerm=" + searchTerm + "; " ;
+					
+					var x = document.cookie;
+
+					console.log('cookie = ', x);
+
+
+
+					var url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/" + searchTerm + "/JSON?record_type=3d"; 
+					var pubChemSearchHTTPRequest_json = new XMLHttpRequest(); 
+					pubChemSearchHTTPRequest_json.open("GET", url, true);
+
+					$.blockUI({
+							message: '<h1>Searching...</h1>'
+						});
+				    
+				
+					 // subscribe to this event before you send your request.
+					pubChemSearchHTTPRequest_json.onreadystatechange=function()
+					{
+					 	if (pubChemSearchHTTPRequest_json.readyState==4)
+					 	{
+					 		//console.log('responseText json =', pubChemSearchHTTPRequest_json.responseText);
+					   		var jsonResponse = JSON.parse(pubChemSearchHTTPRequest_json.responseText);
+							//console.log('searchTerm json results =', jsonResponse);
+							$.unblockUI();
+
+							
+							if (jsonResponse.Fault)
+							{
+								var searchErrorMessage = 'Search Error' + "\n" + jsonResponse.Fault.Code + "\n" + jsonResponse.Fault.Message;
+								console.log(searchErrorMessage);
+								alert(searchErrorMessage);
+							}
+							else
+							{
+								if (jsonResponse)
+								{
+									console.log('atoms - ' , jsonResponse.PC_Compounds[0].atoms);
+									console.log('bonds - ' , jsonResponse.PC_Compounds[0].bonds);
+									console.log('coords - ' , jsonResponse.PC_Compounds[0].coords);
+									console.log('cid - ' , jsonResponse.PC_Compounds[0].id.id.cid);
+									
+									loadPubChemMoleculeProperties( jsonResponse.PC_Compounds[0].id.id.cid );
+
+									loadPubChemMolecule(jsonResponse.PC_Compounds[0]);
+								}
+							}
+							
+					  	}
+
+					}
+					pubChemSearchHTTPRequest_json.send(null);
+			}
+
+			function pubChem_compoundSearch( searchTerm ){
+
+					var url = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&term=" + searchTerm + "&retmode=json&retmax=1000"; 
+					var pubChemSearchHTTPRequest_json = new XMLHttpRequest(); 
+					pubChemSearchHTTPRequest_json.open("GET", url, true);
+
+					$.blockUI({
+							message: '<h1>Searching...</h1>'
+						});
+				    
+				
+					 // subscribe to this event before you send your request.
+					pubChemSearchHTTPRequest_json.onreadystatechange=function()
+					{
+					 	if (pubChemSearchHTTPRequest_json.readyState==4)
+					 	{
+					 		//console.log('responseText json =', pubChemSearchHTTPRequest_json.responseText);
+					   		var jsonResponse = JSON.parse(pubChemSearchHTTPRequest_json.responseText);
+							//console.log('searchTerm json results =', jsonResponse.esearchresult);
+							$.unblockUI();
+
+
+							if (jsonResponse.esearchresult.errorlist)
+							{
+								console.log('search error - ', jsonResponse.esearchresult.errorlist.phrasesnotfound);
+							}
+							if (jsonResponse.esearchresult.idlist)
+							{
+								console.log('search results found - ' + jsonResponse.esearchresult.idlist[0]);	
+
+								//load the first molecule and morph between its conformers....
+								pubChem_CID_getName(jsonResponse.esearchresult.idlist[0]);
+								
+								// CAN"T DO ANYTHING DURING YTHE ASYNC CALL
+								//console.log('molecule_IUPAC_Preferred_Name -', molecule_IUPAC_Preferred_Name);
+		   						//$("#info").html(molecule_IUPAC_Preferred_Name);
+
+								/*
+								for ( var cid in jsonResponse.esearchresult.idlist)
+								{
+									pubChem_CID_getName(jsonResponse.esearchresult.idlist[cid]);
+								}
+								*/
+							}
+							//Sometimes we don't get any synonyms back! nothing to name the molecule!?!?
+							return jsonResponse.esearchresult;
+					  	}
+
+					}
+					pubChemSearchHTTPRequest_json.send(null);
+			}
+
+
+
+
+			function pubChem_printJSON( cid )
+			{
+				console.log('loading -', cid);
+				var url = "https://pubchem.ncbi.nlm.nih.gov/classification/cgi/classifications.fcgi?hid=1&search_uid=2244&search_uid_type=cid&search_type=tree&format=json"; 
+
+				console.log('url44 -', url);
+
+				var pubSearch_json = new XMLHttpRequest(); 
+
+				pubSearch_json.open("GET", url, true);
+				console.log('async');
+				 // subscribe to this event before you send your request.
+				pubSearch_json.onreadystatechange=function()
+				{
+				 	if (pubSearch_json.readyState==4)
+				 	{
+
+				 		console.log('responseText json =', pubSearch_json.responseText);
+				 		/*
+				   		var jsonResponse = JSON.parse(pubSearch_json.responseText);
+				   		if (jsonResponse.PC_Compounds)
+				   		{
+				   			console.log('cid json =', jsonResponse.PC_Compounds[0].props); //0 because we only sent off 1 cid request...asyncronously btw	
+				   			for (var propIndex in jsonResponse.PC_Compounds[0].props)
+				   			{
+				   				var propertyObject = jsonResponse.PC_Compounds[0].props[propIndex];
+				   				
+				   				if (propertyObject.urn.label == 'IUPAC Name')
+				   				{
+				   					if (propertyObject.urn.name == 'Preferred')
+				   					{
+				   						console.log('property Object = ' + propertyObject.value.sval);		
+				   						//$("#info").html(propertyObject.value.sval);
+				   						return propertyObject.value.sval;
+				   					}
+				   				}
+				   			}
+				   		}*/
+					}
+				}
+			}
+
+
+
+			function pubChem_load_molecule( cid )
+			{
+				console.log('loading -', cid);
+				var url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/" + cid + "/JSON"; 
+
+				var pubSearch_json = new XMLHttpRequest(); 
+
+				pubSearch_json.open("GET", url, true);
+
+				 // subscribe to this event before you send your request.
+				pubSearch_json.onreadystatechange=function()
+				{
+				 	if (pubSearch_json.readyState==4)
+				 	{
+
+				 		console.log('responseText json =', pubSearch_json.responseText);
+				 		/*
+				   		var jsonResponse = JSON.parse(pubSearch_json.responseText);
+				   		if (jsonResponse.PC_Compounds)
+				   		{
+				   			console.log('cid json =', jsonResponse.PC_Compounds[0].props); //0 because we only sent off 1 cid request...asyncronously btw	
+				   			for (var propIndex in jsonResponse.PC_Compounds[0].props)
+				   			{
+				   				var propertyObject = jsonResponse.PC_Compounds[0].props[propIndex];
+				   				
+				   				if (propertyObject.urn.label == 'IUPAC Name')
+				   				{
+				   					if (propertyObject.urn.name == 'Preferred')
+				   					{
+				   						console.log('property Object = ' + propertyObject.value.sval);		
+				   						//$("#info").html(propertyObject.value.sval);
+				   						return propertyObject.value.sval;
+				   					}
+				   				}
+				   			}
+				   		}*/
+					}
+				}
+			}
+
+
+
+			function pubChem_CID_getName( cid ){
+
+					var url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/" + cid + "/JSON"; 
+					var pubChemSearchHTTPRequest_json = new XMLHttpRequest(); 
+					pubChemSearchHTTPRequest_json.open("GET", url, true);
+
+					 // subscribe to this event before you send your request.
+					pubChemSearchHTTPRequest_json.onreadystatechange=function()
+					{
+					 	if (pubChemSearchHTTPRequest_json.readyState==4)
+					 	{
+					 		//console.log('responseText json =', pubChemSearchHTTPRequest_json.responseText);
+					   		var jsonResponse = JSON.parse(pubChemSearchHTTPRequest_json.responseText);
+					   		if (jsonResponse.PC_Compounds)
+					   		{
+					   			//console.log('props =', jsonResponse.PC_Compounds[0].props); //0 because we only sent off 1 cid request...asyncronously btw	
+					   			for (var propIndex in jsonResponse.PC_Compounds[0].props)
+					   			{
+					   				var propertyObject = jsonResponse.PC_Compounds[0].props[propIndex];
+					   				
+					   				if (propertyObject.urn.label == 'IUPAC Name')
+					   				{
+					   					
+					   					if (propertyObject.urn.name == 'Preferred')
+					   					{
+					   						console.log('property Object = ' + propertyObject.value.sval);		
+					   						$("#info").html(propertyObject.value.sval);
+					   						return propertyObject.value.sval;
+					   					}
+					   				}
+					   			}
+					   		}
+							//Sometimes we don't get any synonyms back! nothing to name the molecule!?!?
+							//return jsonResponse;
+					  	}
+					}
+					pubChemSearchHTTPRequest_json.send(null);
+			}
+
+			function pubChem_SID_getName( sid ){
+
+					var url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/substance/sid/" + sid + "/JSON"; 
+					var pubChemSearchHTTPRequest_json = new XMLHttpRequest(); 
+					pubChemSearchHTTPRequest_json.open("GET", url, true);
+
+					 // subscribe to this event before you send your request.
+					pubChemSearchHTTPRequest_json.onreadystatechange=function()
+					{
+					 	if (pubChemSearchHTTPRequest_json.readyState==4)
+					 	{
+					 		//console.log('responseText json =', pubChemSearchHTTPRequest_json.responseText);
+					   		var jsonResponse = JSON.parse(pubChemSearchHTTPRequest_json.responseText);
+							console.log('sid json =', jsonResponse.PC_Substances[0].synonyms);
+
+							//Sometimes we don't get any synonyms back! nothing to name the molecule!?!?
+							return jsonResponse.PC_Substances[0].synonyms;
+					  	}
+					}
+					pubChemSearchHTTPRequest_json.send(null);
+			}
+
+			function pubChemAutocomplete(){
+
+					var url = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&term=aspirin&retmode=json&retmax=1000"; 
+					var pubChemSearchHTTPRequest_json = new XMLHttpRequest(); 
+					pubChemSearchHTTPRequest_json.open("GET", url, true);
+
+					 // subscribe to this event before you send your request.
+					pubChemSearchHTTPRequest_json.onreadystatechange=function()
+					{
+					 	if (pubChemSearchHTTPRequest_json.readyState==4)
+					 	{
+					   		var jsonResponse = JSON.parse(pubChemSearchHTTPRequest_json.responseText);
+							console.log('json =', jsonResponse.esearchresult);
+							return jsonResponse;
+					  	}
+					}
+					pubChemSearchHTTPRequest_json.send(null);
+			}
+
+			function checkField(){
+				
+				if($("#field").val() == "")
+				{
+					alert('Search Field is Empty, Search for molecules on PubChem by PuchChem index, name, or any other keyword you might use on PubChem!');
+					return false;
+				}
+
+				str = $("#field").val();
+				//document.all.helpiframe.src="smm3.jsp?searchStr=" + str;
+				//showHide('passwordLayer','visible');
+
+				return false;
+
+			}
+
+
+			function process_pubChem_compoundSearch()
+			{
+				console.log("begin pubChem compound Search - " + $("#field").val());
+				pubChem_compoundSearchByName($("#field").val());
+			}
+			
+			function getCookie(cname)
+			{
+				var name = cname + "=";
+				var ca = document.cookie.split(';');
+
+				for(var i=0; i<ca.length; i++)
+				{
+					var c = ca[i].trim();
+					if (c.indexOf(name)==0)
+						return c.substring(name.length,c.length);
+				}
+				return "";
+			}
+
+			$(document).ready(function() {  
+			    // all jQuery code goes here  
+		    
+		    	/*
+
+		    	//look up cookie value here
+		    	var x = document.cookie;
+		    	console.log('cookie = ', x);
+
+
+		    	var oldSearchTerm=getCookie("searchTerm");
+				if (oldSearchTerm!="")
+				{
+					console.log('searching old cookie = ', x);
+					//alert("Welcome again " + username);
+					pubChem_compoundSearchByName(oldSearchTerm);
+
+				}
+				
+			    
+				*/
+
+				pubChem_printJSON(2244);
+
+
+
+				$('#pubChemSearchForm').submit(function () {
+				 //console.log('userDidEnter in pubChemSearchForm');
+				 process_pubChem_compoundSearch();
+				 return false;
+				});
+
+			    $('#submitButton').click(function() {
+					//console.log('submit clicked - ' + $("#field").val());
+					process_pubChem_compoundSearch();
+				});
+
+				$('#field').submit(function () {
+					//sendContactForm();
+					//console.log('Submit without refreshing');
+					return false;
+				});
+
+			    // if text input field value is not empty show the "X" button
+				$("#field").keyup(function() {
+					//console.log('search field keyup - ' + $("#field").val());
+					$("#x").fadeIn();
+					if ($.trim($("#field").val()) == "") {
+						$("#x").fadeOut();
+					}
+
+				});
+					// on click of "X", delete input field value and hide "X"
+				$("#x").click(function() {
+					//console.log('X clicked');
+					$("#field").val("");
+					$(this).hide();
+				});
+
+
+			});  
+
+
+			var camera, scene, renderer;
+			var controls;
+			var root;
+
+			var videoInput = document.getElementById('vid');
+			var canvasInput = document.getElementById('compare');
+
+			var objects = [];
+			var tmpVec1 = new THREE.Vector3();
+			var tmpVec2 = new THREE.Vector3();
+			var tmpVec3 = new THREE.Vector3();
+			var tmpVec4 = new THREE.Vector3();
+
+			var visualizationType = 2;
+
+			var MOLECULES = {
+				"Ethanol": "ethanol.pdb",
+				"Aspirin": "aspirin.pdb",
+				"Caffeine": "caffeine.pdb",
+				"Nicotine": "nicotine.pdb",
+				"LSD": "lsd.pdb",
+				"Cocaine": "cocaine.pdb",
+				"Cholesterol": "cholesterol.pdb",
+				"Lycopene": "lycopene.pdb",
+				"Glucose": "glucose.pdb",
+				"Aluminium oxide": "Al2O3.pdb",
+				"Cubane": "cubane.pdb",
+				"Copper": "cu.pdb",
+				"Fluorite": "caf2.pdb",
+				"Salt": "nacl.pdb",
+				"YBCO superconductor": "ybco.pdb",
+				"Buckyball": "buckyball.pdb",
+				//"Diamond": "diamond.pdb",
+				"Graphite": "graphite.pdb"
+			};
+
+			var loader = new THREE.PubChem_3DJSONLoader();
+			var colorSpriteMap = {};
+			var baseSprite = document.createElement( 'img' );
+
+			var menu = document.getElementById( "menu" );
+
+			init();
+			animate();
+			
+
+			function init() {
+
+				camera = new THREE.PerspectiveCamera( 23, window.innerWidth / window.innerHeight, 1, 100000 );
+				camera.position.z = 1500;
+
+				//camera = new THREE.PerspectiveCamera( 23, window.innerWidth / window.innerHeight, 1, 100000 );
+				//camera.position.z = 1500;
+
+
+				scene = new THREE.Scene();
+
+				root = new THREE.Object3D();
+				scene.add( root );
+
+				//
+
+				renderer = new THREE.CSS3DRenderer();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.getElementById( 'container' ).appendChild( renderer.domElement );
+
+				//
+
+				controls = new THREE.TrackballControls( camera, renderer.domElement );
+				controls.rotateSpeed = 0.5;
+				controls.addEventListener( 'change', render );
+
+				//
+
+				baseSprite.onload = function () {
+					//$("#info").html('Caffeine');
+					loadMolecule( "models/molecules/caffeine.pdb" );
+
+					//createMenu();
+
+				};
+
+				baseSprite.src = 'textures/sprites/ball.png';
+
+				//
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+
+			//
+
+			function generateButtonCallback( url ) {
+
+				return function ( event ) {
+
+					loadMolecule( url );
+
+				}
+
+			}
+
+			function createMenu() {
+
+				for ( var m in MOLECULES ) {
+
+					var button = document.createElement( 'button' );
+					button.innerHTML = m;
+					menu.appendChild( button );
+
+					var url = "models/molecules/" +  MOLECULES[ m ];
+
+					button.addEventListener( 'click', generateButtonCallback( url ), false );
+
+				}
+
+
+
+			}
+
+			//
+
+			function showAtoms() {
+
+				for ( var i = 0; i < objects.length; i ++ ) {
+
+					var object = objects[ i ];
+
+					if ( object instanceof THREE.CSS3DSprite ) {
+
+						object.element.style.display = "";
+						object.visible = true;
+
+					} else {
+
+						object.element.style.display = "none";
+						object.visible = false;
+
+					}
+
+				}
+
+			}
+
+			function showBonds() {
+
+				for ( var i = 0; i < objects.length; i ++ ) {
+
+					var object = objects[ i ];
+
+					if ( object instanceof THREE.CSS3DSprite ) {
+
+						object.element.style.display = "none";
+						object.visible = false;
+
+					} else {
+
+						object.element.style.display = "";
+						object.element.style.height = object.userData.bondLengthFull;
+						object.visible = true;
+
+					}
+
+				}
+
+			}
+
+			function showAtomsBonds() {
+
+				for ( var i = 0; i < objects.length; i ++ ) {
+
+					var object = objects[ i ];
+
+					object.element.style.display = "";
+					object.visible = true;
+
+					if ( ! ( object instanceof THREE.CSS3DSprite ) ) {
+
+						object.element.style.height = object.userData.bondLengthShort;
+
+					}
+
+				}
+
+			}
+
+			//
+
+			function colorify( ctx, width, height, color, a ) {
+
+				var r = color.r;
+				var g = color.g;
+				var b = color.b;
+
+				var imageData = ctx.getImageData( 0, 0, width, height );
+				var data = imageData.data;
+
+				for ( var y = 0; y < height; y ++ ) {
+
+					for ( var x = 0; x < width; x ++ ) {
+
+						var index = ( y * width + x ) * 4;
+
+						data[ index ]     *= r;
+						data[ index + 1 ] *= g;
+						data[ index + 2 ] *= b;
+						data[ index + 3 ] *= a;
+
+					}
+
+				}
+
+				ctx.putImageData( imageData, 0, 0 );
+
+			}
+
+			function imageToCanvas( image ) {
+
+				var width = image.width;
+				var height = image.height;
+
+				var canvas = document.createElement( 'canvas' );
+
+				canvas.width = width;
+				canvas.height = height;
+
+				var context = canvas.getContext( '2d' );
+				context.drawImage( image, 0, 0, width, height );
+
+				return canvas;
+
+			}
+
+			//
+			function setAtomSize( atom, element)
+			{
+				console.log('atom size -', atom.width, atom.height);
+				console.log('element -', element);
+				switch(element)
+				{
+					case 'c':
+					console.log('carbon');
+					atom.width = 73;//picometers
+					atom.height = 73;//picometers
+					break;
+					case 'o':
+					console.log('oxygen');
+					atom.width = 66;//picometers
+					atom.height = 66;//picometers
+					break;
+					case 'n':
+					console.log('nitrogen');
+					atom.width = 71;//picometers
+					atom.height = 71;//picometers
+					break;
+					case 'h':
+					console.log('hydrogen');
+					atom.width = 31;//picometers
+					atom.height = 31;//picometers
+					break;
+				}
+			}
+
+			function loadPubChemMoleculeProperties( cid )
+			{
+
+				console.log('pubChem_3djson ', + cid);
+				
+
+				document.getElementById('MoleculeCID').innerHTML = cid;
+
+
+				var url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/" + cid + "/JSON"; 
+				var pubChemSearchHTTPRequest_json = new XMLHttpRequest(); 
+				pubChemSearchHTTPRequest_json.open("GET", url, true);
+
+				 // subscribe to this event before you send your request.
+				pubChemSearchHTTPRequest_json.onreadystatechange=function()
+				{
+				 	if (pubChemSearchHTTPRequest_json.readyState==4)
+				 	{
+				 		//console.log('responseText json =', pubChemSearchHTTPRequest_json.responseText);
+				   		var jsonResponse = JSON.parse(pubChemSearchHTTPRequest_json.responseText);
+				   		if (jsonResponse.PC_Compounds)
+				   		{
+				   			//console.log('props =', jsonResponse.PC_Compounds[0].props); //0 because we only sent off 1 cid request...asyncronously btw	
+				   			for (var propIndex in jsonResponse.PC_Compounds[0].props)
+				   			{
+				   				var propertyObject = jsonResponse.PC_Compounds[0].props[propIndex];
+				   				
+
+				   				
+				   				if (propertyObject.urn.label == 'Count')
+				   				{	
+				   					if (propertyObject.urn.name == 'Rotatable Bond')
+				   					{
+				   						console.log('property Object = ' + propertyObject.value.ival);		
+										document.getElementById('RotatableBond').innerHTML = propertyObject.value.ival;
+				   					}
+									if (propertyObject.urn.name == 'Hydrogen Bond Acceptor')
+				   					{
+				   						console.log('property Object = ' + propertyObject.value.ival);		
+										document.getElementById('HydrogenBondAcceptor').innerHTML = propertyObject.value.ival;
+				   					}
+				   					if (propertyObject.urn.name == 'Hydrogen Bond Donor')
+				   					{
+				   						console.log('property Object = ' + propertyObject.value.ival);		
+										document.getElementById('HydrogenBondDonor').innerHTML = propertyObject.value.ival;
+				   					}
+				   					
+				   					
+				   				}
+
+				   				if (propertyObject.urn.label == 'Molecular Weight')
+				   				{	
+			   						console.log('property Object = ' + propertyObject.value.fval);		
+									document.getElementById('MolecularWeight').innerHTML = propertyObject.value.fval;
+				   				}
+				   				if (propertyObject.urn.label == 'Molecular Formula')
+				   				{	
+			   						console.log('property Object = ' + propertyObject.value.sval);		
+									document.getElementById('MoleculeFormula').innerHTML = propertyObject.value.sval;
+				   				}
+				   				if (propertyObject.urn.label == 'IUPAC Name')
+				   				{	
+				   					if (propertyObject.urn.name == 'Preferred')
+				   					{
+				   						console.log('property Object = ' + propertyObject.value.sval);		
+										document.getElementById('MoleculeName').innerHTML = propertyObject.value.sval;
+				   					}
+				   				}
+				   			}
+				   		}
+						//Sometimes we don't get any synonyms back! nothing to name the molecule!?!?
+						//return jsonResponse;
+				  	}
+				}
+				pubChemSearchHTTPRequest_json.send(null);
+
+
+
+
+
+
+			}
+			function loadPubChemMolecule( pubChem_3djson )
+			{
+
+
+
+				//------------
+				// Clear out old objects from the DOM
+
+
+				for ( var i = 0; i < objects.length; i ++ ) {
+
+					var object = objects[ i ];
+					object.parent.remove( object );
+
+				}
+				//Clear the objects array
+				objects = [];
+
+				//------------
+
+				loader.pubChem_load( pubChem_3djson, function ( geometry, geometryBonds, order ) {
+
+					var offset = THREE.GeometryUtils.center( geometry );
+					geometryBonds.applyMatrix( new THREE.Matrix4().makeTranslation( offset.x, offset.y, offset.z ) );
+
+					for ( var i = 0; i < geometry.vertices.length; i ++ ) {
+
+						var position = geometry.vertices[ i ];
+						var color = geometry.colors[ i ];
+						var element = geometry.elements[ i ];
+
+						if ( ! colorSpriteMap[ element ] ) {
+
+							var canvas = imageToCanvas( baseSprite );
+							var context = canvas.getContext( '2d' );
+
+							colorify( context, canvas.width, canvas.height, color, 1 );
+
+							var dataUrl = canvas.toDataURL();
+
+							colorSpriteMap[ element ] = dataUrl;
+
+						}
+
+						colorSprite = colorSpriteMap[ element ];
+
+						var atom = document.createElement( 'img' );
+						atom.src = colorSprite;
+
+						setAtomSize(atom, element);
+
+						var object = new THREE.CSS3DSprite( atom );
+						object.position.copy( position );
+						object.position.multiplyScalar( 100 );
+						console.log('position -', position);
+						object.matrixAutoUpdate = false;
+						object.updateMatrix();
+
+						root.add( object );
+
+						objects.push( object );
+
+					}
+
+					for ( var i = 0; i < geometryBonds.vertices.length; i += 2 ) {
+
+						var start = geometryBonds.vertices[ i ];
+						var end = geometryBonds.vertices[ i + 1 ];
+
+						start.multiplyScalar( 100 );
+						end.multiplyScalar( 100 );
+
+						tmpVec1.subVectors( end, start );
+						var bondLength = tmpVec1.length();
+
+
+						var axis = tmpVec2.set( 0, 1, 0 ).cross( tmpVec1 );
+						var radians = Math.acos( tmpVec3.set( 0, 1, 0 ).dot( tmpVec4.copy( tmpVec1 ).normalize() ) );
+
+						var objMatrix = new THREE.Matrix4().makeRotationAxis( axis.normalize(), radians );
+							
+
+						console.log('geometryBonds = ', geometryBonds);
+						console.log('order = ', order[i]);
+						console.log('i =', i/2);
+
+						switch (order[i/2])
+						{
+							case 'single':
+							{
+								// One Bond
+
+								var bond = document.createElement( 'div' );
+								bond.className = "bond";
+								bond.style.height = bondLength + "px";
+
+								var bond2 = document.createElement( 'div' );
+								bond2.className = "bond";
+								bond2.style.height = bondLength + "px";
+
+								var joint = new THREE.Object3D( bond );
+								joint.position.copy( start );
+								joint.position.lerp( end, 0.5 );
+
+								joint.matrix.copy( objMatrix );
+								joint.rotation.setFromRotationMatrix( joint.matrix, joint.rotation.order );
+
+								joint.matrixAutoUpdate = false;
+								joint.updateMatrix();
+
+
+								var joint2 = new THREE.Object3D( bond2 );
+								joint2.position.copy( start );
+								joint2.position.lerp( end, 0.5 );
+
+								joint2.matrix.copy( objMatrix );
+								joint2.rotation.setFromRotationMatrix( joint2.matrix, joint2.rotation.order );
+
+								joint2.matrixAutoUpdate = false;
+								joint2.updateMatrix();
+
+
+								var object = new THREE.CSS3DObject( bond );
+								object.rotation.y = Math.PI/2;
+
+								object.matrixAutoUpdate = false;
+								object.updateMatrix();
+
+								object.userData.bondLengthShort = bondLength + "px";
+								object.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object.userData.joint = joint;
+
+								joint.add( object );
+								root.add( joint );
+
+								objects.push( object );
+
+
+								var object2 = new THREE.CSS3DObject( bond2 );
+								//object2.rotation.y = Math.PI/2;
+								object2.matrixAutoUpdate = false;
+								object2.updateMatrix();
+
+								object2.userData.bondLengthShort = bondLength + "px";
+								object2.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object2.userData.joint = joint;
+
+								joint2.add( object2 );
+								root.add( joint2 );
+
+								objects.push( object2 );
+								break;
+							}
+							case 'double':
+							{
+								// One Bond
+
+								var bond = document.createElement( 'div' );
+								bond.className = "bond";
+								bond.style.height = bondLength + "px";
+
+								var bond2 = document.createElement( 'div' );
+								bond2.className = "bond";
+								bond2.style.height = bondLength + "px";
+
+								var joint = new THREE.Object3D( bond );
+								joint.position.copy( start );
+								joint.position.lerp( end, 0.5 );
+
+								joint.matrix.copy( objMatrix );
+								joint.rotation.setFromRotationMatrix( joint.matrix, joint.rotation.order );
+
+								joint.matrixAutoUpdate = false;
+								joint.updateMatrix();
+
+
+								var joint2 = new THREE.Object3D( bond2 );
+								joint2.position.copy( start );
+								joint2.position.lerp( end, 0.5 );
+
+								joint2.matrix.copy( objMatrix );
+								joint2.rotation.setFromRotationMatrix( joint2.matrix, joint2.rotation.order );
+
+								joint2.matrixAutoUpdate = false;
+								joint2.updateMatrix();
+
+
+								var object = new THREE.CSS3DObject( bond );
+								object.rotation.y = Math.PI/2;
+								object.position.x -= 10;
+								object.matrixAutoUpdate = false;
+								object.updateMatrix();
+
+								object.userData.bondLengthShort = bondLength + "px";
+								object.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object.userData.joint = joint;
+
+								joint.add( object );
+								root.add( joint );
+
+								objects.push( object );
+
+
+								var object2 = new THREE.CSS3DObject( bond2 );
+								//object2.rotation.y = Math.PI/2;
+								object2.position.x -= 10;
+								object2.matrixAutoUpdate = false;
+								object2.updateMatrix();
+
+								object2.userData.bondLengthShort = bondLength + "px";
+								object2.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object2.userData.joint = joint;
+
+								joint2.add( object2 );
+								root.add( joint2 );
+
+								objects.push( object2 );
+
+
+
+
+								// Another Bond
+
+								var bond = document.createElement( 'div' );
+								bond.className = "bond";
+								bond.style.height = bondLength + "px";
+
+								var bond2 = document.createElement( 'div' );
+								bond2.className = "bond";
+								bond2.style.height = bondLength + "px";
+
+								var joint = new THREE.Object3D( bond );
+								joint.position.copy( start );
+								joint.position.lerp( end, 0.5 );
+
+								joint.matrix.copy( objMatrix );
+								joint.rotation.setFromRotationMatrix( joint.matrix, joint.rotation.order );
+
+								joint.matrixAutoUpdate = false;
+								joint.updateMatrix();
+
+
+								var joint2 = new THREE.Object3D( bond2 );
+								joint2.position.copy( start );
+								joint2.position.lerp( end, 0.5 );
+
+								joint2.matrix.copy( objMatrix );
+								joint2.rotation.setFromRotationMatrix( joint2.matrix, joint2.rotation.order );
+
+								joint2.matrixAutoUpdate = false;
+								joint2.updateMatrix();
+
+
+								var object = new THREE.CSS3DObject( bond );
+								object.rotation.y = Math.PI/2;
+								object.position.x += 10;
+								object.matrixAutoUpdate = false;
+								object.updateMatrix();
+
+								object.userData.bondLengthShort = bondLength + "px";
+								object.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object.userData.joint = joint;
+
+								joint.add( object );
+								root.add( joint );
+
+								objects.push( object );
+
+
+								var object2 = new THREE.CSS3DObject( bond2 );
+								//object2.rotation.y = Math.PI/2;
+								object2.position.x += 10;
+								object2.matrixAutoUpdate = false;
+								object2.updateMatrix();
+
+								object2.userData.bondLengthShort = bondLength + "px";
+								object2.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object2.userData.joint = joint;
+
+								joint2.add( object2 );
+								root.add( joint2 );
+
+								objects.push( object2 );
+							}
+							break;
+							case 'triple':
+							{
+								// One Bond
+
+								var bond = document.createElement( 'div' );
+								bond.className = "bond";
+								bond.style.height = bondLength + "px";
+
+								var bond2 = document.createElement( 'div' );
+								bond2.className = "bond";
+								bond2.style.height = bondLength + "px";
+
+								var joint = new THREE.Object3D( bond );
+								joint.position.copy( start );
+								joint.position.lerp( end, 0.5 );
+
+								joint.matrix.copy( objMatrix );
+								joint.rotation.setFromRotationMatrix( joint.matrix, joint.rotation.order );
+
+								joint.matrixAutoUpdate = false;
+								joint.updateMatrix();
+
+
+								var joint2 = new THREE.Object3D( bond2 );
+								joint2.position.copy( start );
+								joint2.position.lerp( end, 0.5 );
+
+								joint2.matrix.copy( objMatrix );
+								joint2.rotation.setFromRotationMatrix( joint2.matrix, joint2.rotation.order );
+
+								joint2.matrixAutoUpdate = false;
+								joint2.updateMatrix();
+
+
+								var object = new THREE.CSS3DObject( bond );
+								object.rotation.y = Math.PI/2;
+								object.matrixAutoUpdate = false;
+								object.updateMatrix();
+
+								object.userData.bondLengthShort = bondLength + "px";
+								object.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object.userData.joint = joint;
+
+								joint.add( object );
+								root.add( joint );
+
+								objects.push( object );
+
+
+								var object2 = new THREE.CSS3DObject( bond2 );
+								//object2.rotation.y = Math.PI/2;
+								object2.matrixAutoUpdate = false;
+								object2.updateMatrix();
+
+								object2.userData.bondLengthShort = bondLength + "px";
+								object2.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object2.userData.joint = joint;
+
+								joint2.add( object2 );
+								root.add( joint2 );
+
+								objects.push( object2 );
+
+
+
+								// One Bond
+
+								var bond = document.createElement( 'div' );
+								bond.className = "bond";
+								bond.style.height = bondLength + "px";
+
+								var bond2 = document.createElement( 'div' );
+								bond2.className = "bond";
+								bond2.style.height = bondLength + "px";
+
+								var joint = new THREE.Object3D( bond );
+								joint.position.copy( start );
+								joint.position.lerp( end, 0.5 );
+
+								joint.matrix.copy( objMatrix );
+								joint.rotation.setFromRotationMatrix( joint.matrix, joint.rotation.order );
+
+								joint.matrixAutoUpdate = false;
+								joint.updateMatrix();
+
+
+								var joint2 = new THREE.Object3D( bond2 );
+								joint2.position.copy( start );
+								joint2.position.lerp( end, 0.5 );
+
+								joint2.matrix.copy( objMatrix );
+								joint2.rotation.setFromRotationMatrix( joint2.matrix, joint2.rotation.order );
+
+								joint2.matrixAutoUpdate = false;
+								joint2.updateMatrix();
+
+
+								var object = new THREE.CSS3DObject( bond );
+								object.rotation.y = Math.PI/2;
+								object.position.x -= 20;
+								object.matrixAutoUpdate = false;
+								object.updateMatrix();
+
+								object.userData.bondLengthShort = bondLength + "px";
+								object.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object.userData.joint = joint;
+
+								joint.add( object );
+								root.add( joint );
+
+								objects.push( object );
+
+
+								var object2 = new THREE.CSS3DObject( bond2 );
+								//object2.rotation.y = Math.PI/2;
+								object2.position.x -= 20;
+								object2.matrixAutoUpdate = false;
+								object2.updateMatrix();
+
+								object2.userData.bondLengthShort = bondLength + "px";
+								object2.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object2.userData.joint = joint;
+
+								joint2.add( object2 );
+								root.add( joint2 );
+
+								objects.push( object2 );
+
+
+
+
+								// Another Bond
+
+								var bond = document.createElement( 'div' );
+								bond.className = "bond";
+								bond.style.height = bondLength + "px";
+
+								var bond2 = document.createElement( 'div' );
+								bond2.className = "bond";
+								bond2.style.height = bondLength + "px";
+
+								var joint = new THREE.Object3D( bond );
+								joint.position.copy( start );
+								joint.position.lerp( end, 0.5 );
+
+								joint.matrix.copy( objMatrix );
+								joint.rotation.setFromRotationMatrix( joint.matrix, joint.rotation.order );
+
+								joint.matrixAutoUpdate = false;
+								joint.updateMatrix();
+
+
+								var joint2 = new THREE.Object3D( bond2 );
+								joint2.position.copy( start );
+								joint2.position.lerp( end, 0.5 );
+
+								joint2.matrix.copy( objMatrix );
+								joint2.rotation.setFromRotationMatrix( joint2.matrix, joint2.rotation.order );
+
+								joint2.matrixAutoUpdate = false;
+								joint2.updateMatrix();
+
+
+								var object = new THREE.CSS3DObject( bond );
+								object.rotation.y = Math.PI/2;
+								object.position.x += 20;
+								object.matrixAutoUpdate = false;
+								object.updateMatrix();
+
+								object.userData.bondLengthShort = bondLength + "px";
+								object.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object.userData.joint = joint;
+
+								joint.add( object );
+								root.add( joint );
+
+								objects.push( object );
+
+
+								var object2 = new THREE.CSS3DObject( bond2 );
+								//object2.rotation.y = Math.PI/2;
+								object2.position.x += 20;
+								object2.matrixAutoUpdate = false;
+								object2.updateMatrix();
+
+								object2.userData.bondLengthShort = bondLength + "px";
+								object2.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object2.userData.joint = joint;
+
+								joint2.add( object2 );
+								root.add( joint2 );
+
+								objects.push( object2 );
+							}
+						}
+
+					}
+
+					//console.log( "CSS3DObjects:", objects.length );
+
+					switch ( visualizationType ) {
+
+						case 0: showAtoms(); break;
+						case 1: showBonds(); break;
+						case 2: showAtomsBonds(); break;
+
+					}
+
+					render();
+
+				} );
+
+			}
+
+			//
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+				render();
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+				controls.update();
+
+				var time = Date.now() * 0.0004;
+
+				//root.rotation.x = time;
+				//root.rotation.y = time * 0.7;
+
+				render();
+
+			}
+
+			function render() {
+
+				renderer.render( scene, camera );
+
+			}
+
+			// video styling
+		    videoInput.style.position = 'absolute';
+		    videoInput.style.bottom = '50px';
+		    videoInput.style.zIndex = '100001';
+		    //videoInput.style.display = 'block';
+		    videoInput.style.display = 'none';
+
+			// set up camera controller
+			//headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 15, [0,0,0], new THREE.Vector3(0,0,0), {damping : 0.5});
+			//-headtrackr.controllers.three.realisticRelativeCameraControl(camera, 15, [0,0,0], new THREE.Vector3(0,0,0), {damping : 0.1}, root);
+			// Face detection setup
+			
+			//-var htracker = new headtrackr.Tracker({ ui : false, fadeVideo : true, calcAngles : true, cameraOffset : 5});
+			//-htracker.init(videoInput, canvasInput);
+			//-htracker.start();		    
+
+    </script>
+  </body>
+
+</html>
