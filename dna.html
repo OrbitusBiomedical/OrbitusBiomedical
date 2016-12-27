@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>OrbitusBiomedical</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		
+		<link href="css/bootstrap.css" rel="stylesheet">
+    	<link href="css/bootstrap-responsive.css" rel="stylesheet">
+
+		<style>
+
+			h4 {
+				font-size:90px;
+			}
+
+			body {
+				background-color: #FFFFFF;
+				margin: 0px;
+				overflow: hidden;
+				font-family:Monospace;
+				font-size:13px;
+				text-align:center;
+				font-weight: bold;
+				text-align:center;
+
+			}
+			
+			
+			a {
+				color:#0078ff;
+			}
+
+			#info {
+				color:#000;
+				position: absolute;
+				top: 0px;
+				width: 100%;
+				height: 100%;
+				padding: 5px;
+				z-index:100;
+			}
+
+
+			#outputcontent {
+				color: #ffffff;
+
+			}
+
+			#message {
+				color: #ffffff;
+			}
+
+			
+			* {
+				margin:0;
+				padding:0;
+				box-sizing:border-box;
+				-webkit-box-sizing:border-box;
+				-moz-box-sizing:border-box;
+				-webkit-font-smoothing:antialiased;
+				-moz-font-smoothing:antialiased;
+				-o-font-smoothing:antialiased;
+				font-smoothing:antialiased;
+				text-rendering:optimizeLegibility;
+			}
+			
+			body {
+				font:400 12px/1.625 "Helvetica Neue", Helvetica, Arial, sans-serif;
+			}
+
+			#float_background
+			{
+				background-color:#000000;
+				opacity:0.5;
+
+				position:fixed;
+			    top:-30px;
+			    right:400px;
+			    float:right;
+			}
+			
+
+			#float{
+			    position:fixed;
+			    top:-30px;
+			    right:400px;
+			    float:right;
+			}
+			
+			.wrapper {
+				position:absolute;
+				width:100%;
+				background: url() no-repeat #FFFFFF center; 
+
+			}
+			#white_background {
+				position:absolute;
+				top:0px;
+				left:0px;
+				width:100%;
+				height:100%;
+				background: url() no-repeat #FFFFFF center; 
+			}
+
+
+			#ContactPage{
+				
+				top:20%;
+				width: 400px;
+    			margin: 0 auto;
+    			z-index:1000;
+				-webkit-transition: opacity 0.5s ease-in;
+	            -moz-transition: opacity 0.5s ease-in;
+	            -o-transition: opacity 0.5s ease-in;
+
+			}
+
+
+			.hidden-display
+			{
+				visibility: hidden;
+				opacity:0;
+			}
+			.visible-display
+			{
+				visibility: visible;
+				opacity: 1;
+			}
+			::-webkit-input-placeholder {
+			    color:#888;
+			}
+			:-moz-placeholder {
+			    color:#888;
+			}
+			::-moz-placeholder {
+			    color:#888;
+			}
+			:-ms-input-placeholder {
+			    color:#888;
+			}
+			
+
+			#webgl_div {
+				position:fixed;
+				top:0px;
+				left:0px;
+				width:100%;
+				height:100%;
+			}
+
+
+
+			#blackOpaqueBackground {
+				position:absolute;
+				width:90%;
+				height:90%;
+				opacity:0.7;
+				border:4px;
+				background: url() no-repeat #CCCCCC center; 
+				border-style:solid;
+				border-color:#000000 #000000;
+				-webkit-border-radius: 2px;
+				-moz-border-radius: 2px;
+				border-radius: 2px;
+				z-index: 1;
+			}
+
+
+			#topbar {
+				position:absolute;
+				top:30px;
+				left:110px;
+				width:200px;
+				height:40px;
+			}
+
+			#logo {
+				position:absolute;
+				top:50%;
+				height: 475px;
+				width:500px;
+				margin-left: -250px;
+				margin-top: -237px;
+				left: 50%;
+
+			}
+
+		</style>
+
+		<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
+
+		<!--MOBILE SPECIFIC STYLESHEET-->
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+		<link media="only screen and (max-device-width: 480px)" href="css/mobile.css" type= "text/css" rel="stylesheet" />
+
+
+
+	</head>
+	<body>
+
+		<div id="wrapper">
+
+
+			<div id="white_background">
+			</div>
+
+			<!--HEADER FOR MOBILES ONLY-->
+			<header id="mobile">
+			<h1><a href="./" title="Return to homepage">Mobile</a></h1>
+			</header><!--end mobile-->
+
+			<div id="webgl_div">
+			</div>
+
+
+			<div class="support">
+			  <p id="recog-support">Your browser doesn't support <a href="https://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html#speechreco-section"><code>window.SpeechRecognition</code></a> from the Web Speech API.</p>
+			  <p id="synth-support">Your browser doesn't support <a href="https://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html#tts-section"><code>window.speechSynthesis</code></a> from the Web Speech API.</p>
+			</div>
+			
+			<output></output>
+			
+			
+			<div id="info">	
+				<img id="logo" src="textures/sprites/OrbitusRobotics_logo_black.png" alt="OrbitusBiomedical"></img></a>
+			</div>
+
+
+		</div>
+		
+
+
+		<script src="libraries/three.min.js"></script>
+
+		<script src="js/controls/TrackballControls.js"></script>
+		<script src="js/controls/TransformControls.js"></script>
+
+		<script src="js/loaders/PubChem_3DJSONLoader.js"></script>
+		<script src="js/loaders/PDBLoader.js"></script>
+		
+		<script src="js/libs/stats.min.js"></script>
+		
+		<script src="js/THREEx.KeyboardState.js"></script>
+		<script src="js/THREEx.FullScreen.js"></script>
+		<script src="js/THREEx.WindowResize.js"></script>
+		<script src="js/threex.geometricglowmesh.js"></script>
+
+
+		<script src="js/jquery-2.1.0.js" ></script>
+		<script src="js/jquery.blockUI.js" ></script>
+		<script src="js/Detector.js"></script>
+		<script src="js/libs/tween.min.js"></script>
+
+		<script type="text/javascript" src="js/bootstrap.js"></script>
+		<script type="text/javascript" src="js/bootstrap-tooltip.js"></script>
+		<script type="text/javascript" src="js/bootstrap-confirmation.js"></script>		
+
+		<link href="css/jquery-ui.css" rel="stylesheet">
+		<script src="js/jquery-ui.js"></script>
+
+		<script src="js/latinize.js"></script>
+		<!--<script src="js/computer_speak.js?2014"></script>-->
+		
+
+		<script>
+
+			var alphaObjects = [];
+			var betaObjects = [];
+			var gammaObjects = [];
+			var deltaObjects = [];
+
+			var alphaOpacity = 1.0;
+			var betaOpacity = 1.0;
+			var gammaOpacity = 1.0;
+			var deltaOpacity = 1.0;
+
+			var alphaDataResponse;
+			var alphaDataTitle;
+			var betaDataResponse;
+			var betaDataTitle;
+			var gammaDataResponse;
+			var gammaDataTitle;
+			var deltaDataResponse;
+			var deltaDataTitle;
+
+
+			var keyboard = new THREEx.KeyboardState();
+			
+			var selectedDimension;
+			var selectedObjectsArray;
+			var universal_material;
+
+			
+			$("#content").scroll(function() {
+			    var y_scroll_pos = $("#content").scrollTop();
+				// set to whatever you want it to be
+				console.log('y_scroll_pos - ', y_scroll_pos);
+
+			    if(y_scroll_pos > 150) { // ∂ipole
+			    	/*
+				   computer_speak("Dipole. We were tasked to create an environment with native browser technologies that would present chemical data to the user. Embed an iframe in your webpage and instantly allow users to have 3D control of a molecule. Our goal is to Enhance and educate. Try typing in the name of any molecule in the search field. Our engine is backed with N C B I's PubChem chemical databank.", function() { console.log("done speaking"); 
+				})*/
+			    }
+				
+
+
+			});
+
+			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+			
+
+
+			var out = document.querySelector('output');
+
+			
+			function detect_mobile_device() { 
+			 if( navigator.userAgent.match(/Android/i)
+			 || navigator.userAgent.match(/webOS/i)
+			 || navigator.userAgent.match(/iPhone/i)
+			 || navigator.userAgent.match(/iPad/i)
+			 || navigator.userAgent.match(/iPod/i)
+			 || navigator.userAgent.match(/BlackBerry/i)
+			 || navigator.userAgent.match(/Windows Phone/i)
+			 ){
+			    return true;
+			  }
+			 else {
+			    return false;
+			  }
+			}
+
+
+			function getUrlVars() {
+			    var vars = {};
+			    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+			        vars[key] = value;
+			    });
+			    return vars;
+			}
+
+
+			function show(id) {
+			    document.getElementById(id).style.visibility = "visible";
+			}
+			function hide(id) {
+			    document.getElementById(id).style.visibility = "hidden";
+			}
+
+
+
+			function colorify( ctx, width, height, color, a ) {
+
+				var r = color.r;
+				var g = color.g;
+				var b = color.b;
+
+				var imageData = ctx.getImageData( 0, 0, width, height );
+				var data = imageData.data;
+
+				for ( var y = 0; y < height; y ++ ) {
+
+					for ( var x = 0; x < width; x ++ ) {
+
+						var index = ( y * width + x ) * 4;
+
+						data[ index ]     *= r;
+						data[ index + 1 ] *= g;
+						data[ index + 2 ] *= b;
+						data[ index + 3 ] *= a;
+
+					}
+
+				}
+
+				ctx.putImageData( imageData, 0, 0 );
+
+			}
+
+			
+			function imageToCanvas( image ) {
+
+				var width = image.width;
+				var height = image.height;
+
+				var canvas = document.createElement( 'canvas' );
+
+				canvas.width = width;
+				canvas.height = height;
+
+				var context = canvas.getContext( '2d' );
+				context.drawImage( image, 0, 0, width, height );
+
+				return canvas;
+
+			}
+
+			function setAtomSize( atom, element)
+			{
+				//console.log('atom size -', atom.width, atom.height);
+				//console.log('element -', element);
+				switch(element)
+				{
+					case 'c':
+					//console.log('carbon');
+					atom.width = 73;//picometers
+					atom.height = 73;//picometers
+					break;
+					case 'o':
+					//console.log('oxygen');
+					atom.width = 66;//picometers
+					atom.height = 66;//picometers
+					break;
+					case 'n':
+					//console.log('nitrogen');
+					atom.width = 71;//picometers
+					atom.height = 71;//picometers
+					break;
+					case 'h':
+					//console.log('hydrogen');
+					atom.width = 31;//picometers
+					atom.height = 31;//picometers
+					break;
+				}
+			}
+
+			function getAtomSize(element)
+			{
+				//console.log('element -', element);
+				switch(element)
+				{
+					case 'c':
+					//console.log('carbon');
+					return 73/2.0;//picometers
+					break;
+					case 'o':
+					//console.log('oxygen');
+					return 66/2.0;//picometers
+					break;
+					case 'n':
+					//console.log('nitrogen');
+					return 71/2.0;//picometers
+					break;
+					case 'h':
+					//console.log('hydrogen');
+					return 31/2.0;//picometers
+					break;
+				}
+			}
+
+
+
+			function loadPubChemMoleculeProperties( cid , destinationDimension)
+			{
+
+				//console.log('pubChem_3djson ', + cid);
+				
+
+				document.getElementById('MoleculeCID').innerHTML = cid;
+
+
+				var url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/" + cid + "/JSON"; 
+				var pubChemSearchHTTPRequest_json = new XMLHttpRequest(); 
+				pubChemSearchHTTPRequest_json.open("GET", url, true);
+
+				 // subscribe to this event before you send your request.
+				pubChemSearchHTTPRequest_json.onreadystatechange=function()
+				{
+				 	if (pubChemSearchHTTPRequest_json.readyState==4)
+				 	{
+				 		//console.log('responseText json =', pubChemSearchHTTPRequest_json.responseText);
+				   		var jsonResponse = JSON.parse(pubChemSearchHTTPRequest_json.responseText);
+				   		
+				   		if (destinationDimension == alphaDimension)
+				   		{
+				   			alphaDataResponse = jsonResponse;
+				   		}
+				   		if (destinationDimension == betaDimension)
+				   		{
+				   			betaDataResponse = jsonResponse;
+				   		}
+				   		if (destinationDimension == gammaDimension)
+				   		{
+				   			gammaDataResponse = jsonResponse;
+				   		}
+				   		if (destinationDimension == deltaDimension)
+				   		{
+				   			deltaDataResponse = jsonResponse;
+				   		}
+
+
+				   		parseDataResponseIntoInfoPanel(selectedDimension);
+						
+				  	}
+				}
+				pubChemSearchHTTPRequest_json.send(null);
+			}
+
+			function parseDataResponseIntoInfoPanel(selectedDimension)
+			{
+				var jsonResponse;
+				if (selectedDimension == alphaDimension)
+				{
+					jsonResponse = alphaDataResponse;
+					document.getElementById('MoleculeName').innerHTML = alphaDataTitle;
+				}
+				if (selectedDimension == betaDimension)
+				{
+					jsonResponse = betaDataResponse;
+					document.getElementById('MoleculeName').innerHTML = betaDataTitle;
+				}
+				if (selectedDimension == gammaDimension)
+				{
+					jsonResponse = gammaDataResponse;
+					document.getElementById('MoleculeName').innerHTML = gammaDataTitle;
+				}
+				if (selectedDimension == deltaDimension)
+				{
+					jsonResponse = deltaDataResponse;
+					document.getElementById('MoleculeName').innerHTML = deltaDataTitle;
+				}
+
+
+				if (jsonResponse)
+				{
+			   		if (jsonResponse.PC_Compounds)
+			   		{
+			   			//console.log('props =', jsonResponse.PC_Compounds[0].props); //0 because we only sent off 1 cid request...asyncronously btw	
+			   			for (var propIndex in jsonResponse.PC_Compounds[0].props)
+			   			{
+			   				var propertyObject = jsonResponse.PC_Compounds[0].props[propIndex];
+			   				
+
+			   				
+			   				if (propertyObject.urn.label == 'Count')
+			   				{	
+			   					if (propertyObject.urn.name == 'Rotatable Bond')
+			   					{
+			   						//console.log('property Object = ' + propertyObject.value.ival);		
+									document.getElementById('RotatableBond').innerHTML = propertyObject.value.ival;
+			   					}
+								if (propertyObject.urn.name == 'Hydrogen Bond Acceptor')
+			   					{
+			   						//console.log('property Object = ' + propertyObject.value.ival);		
+									document.getElementById('HydrogenBondAcceptor').innerHTML = propertyObject.value.ival;
+			   					}
+			   					if (propertyObject.urn.name == 'Hydrogen Bond Donor')
+			   					{
+			   						//console.log('property Object = ' + propertyObject.value.ival);		
+									document.getElementById('HydrogenBondDonor').innerHTML = propertyObject.value.ival;
+			   					}
+			   					
+			   					
+			   				}
+
+			   				if (propertyObject.urn.label == 'Molecular Weight')
+			   				{	
+		   						//console.log('property Object = ' + propertyObject.value.fval);		
+								document.getElementById('MolecularWeight').innerHTML = propertyObject.value.fval;
+			   				}
+			   				if (propertyObject.urn.label == 'Molecular Formula')
+			   				{	
+		   						//console.log('property Object = ' + propertyObject.value.sval);		
+								document.getElementById('MoleculeFormula').innerHTML = propertyObject.value.sval;
+			   				}
+			   				if (propertyObject.urn.label == 'IUPAC Name')
+			   				{	
+			   					if (propertyObject.urn.name == 'Preferred')
+			   					{
+			   						//console.log('MoleculeName = ' + propertyObject.value.sval);
+									document.getElementById('IUPAC_PreferredName').innerHTML = propertyObject.value.sval;
+			   					}
+			   				}
+			   			}
+			   		}
+				}
+			}
+
+			function loadRCSB_PDBFile( url , destinationDimension)
+			{
+				//var url = "molecules/bdna.pdb";
+
+
+				//------------
+				// Clear out old objects from the DOM
+				if (!destinationDimension)
+				{
+					console.log('Need destinationDimension... defaulting to alpha');
+				}
+				else
+				{
+					console.log("Loading molecule into destinationDimension - ", destinationDimension);	
+					selectedDimension = destinationDimension;
+				}
+					
+
+				//clearSelectedDimensionObjects();
+
+				//------------
+
+
+				loader.load( url, function ( geometry, geometryBonds ) {
+
+					var offset = THREE.GeometryUtils.center( geometry );
+					geometryBonds.applyMatrix( new THREE.Matrix4().makeTranslation( offset.x, offset.y, offset.z ) );
+
+
+					for ( var i = 0; i < geometry.vertices.length; i ++ ) {
+
+						var position = geometry.vertices[ i ];
+						var color = geometry.colors[ i ];
+
+						var element = geometry.elements[ i ];
+						var atomSize = getAtomSize(element);
+
+						var texture = THREE.ImageUtils.loadTexture( 'textures/sprites/ball.png' );
+  	 					var material = new THREE.SpriteMaterial( { color:color.getHex(), map: texture} );
+    
+
+   						var sprite = new THREE.Sprite( material );
+
+  	 					sprite.position.x = position.x;
+  	 					sprite.position.y = position.y;
+  	 					sprite.position.z = position.z;
+  	 					sprite.opacity = 0.12;
+  	 					
+  	 					//console.log('atomSize = ', atomSize);
+
+
+  	 					if (atomSize)
+  	 						sprite.scale.set( atomSize, atomSize, 1 );
+  	 					else
+  	 						sprite.scale.set( 50, 50, 1 );
+
+						sprite.position.multiplyScalar( 100 );
+
+
+
+						selectedDimension.add( sprite );
+
+						if (selectedDimension == alphaDimension)	
+							alphaObjects.push( sprite );
+						if (selectedDimension == betaDimension)
+							betaObjects.push( sprite );						
+						if (selectedDimension == gammaDimension)	
+							gammaObjects.push( sprite );
+						if (selectedDimension == deltaDimension)
+							deltaObjects.push( sprite );
+
+					}
+					/*
+					for ( var i = 0; i < geometryBonds.vertices.length; i += 2 ) {
+
+						var start = geometryBonds.vertices[ i ];
+						var end = geometryBonds.vertices[ i + 1 ];
+
+						start.multiplyScalar( 100 );
+						end.multiplyScalar( 100 );
+
+						tmpVec1.subVectors( end, start );
+						var bondLength = tmpVec1.length();
+
+
+						var axis = tmpVec2.set( 0, 1, 0 ).cross( tmpVec1 );
+						var radians = Math.acos( tmpVec3.set( 0, 1, 0 ).dot( tmpVec4.copy( tmpVec1 ).normalize() ) );
+
+						var objMatrix = new THREE.Matrix4().makeRotationAxis( axis.normalize(), radians );
+							
+
+						
+						var bond = document.createElement( 'div' );
+						bond.className = "bond";
+						bond.style.height = bondLength + "px";
+
+						var bond2 = document.createElement( 'div' );
+						bond2.className = "bond";
+						bond2.style.height = bondLength + "px";
+
+						var joint = new THREE.Object3D( bond );
+						joint.position.copy( start );
+						joint.position.lerp( end, 0.5 );
+
+						joint.matrix.copy( objMatrix );
+						joint.rotation.setFromRotationMatrix( joint.matrix, joint.rotation.order );
+
+						joint.matrixAutoUpdate = false;
+						joint.updateMatrix();
+
+
+						var joint2 = new THREE.Object3D( bond2 );
+						joint2.position.copy( start );
+						joint2.position.lerp( end, 0.5 );
+
+						joint2.matrix.copy( objMatrix );
+						joint2.rotation.setFromRotationMatrix( joint2.matrix, joint2.rotation.order );
+
+						joint2.matrixAutoUpdate = false;
+						joint2.updateMatrix();
+
+
+
+						var geometry = new THREE.CylinderGeometry( 4, 4, bondLength, 4, 1 );
+						var material =  new THREE.MeshLambertMaterial( { color:0xffffff, shading: THREE.FlatShading, transparent: true } );
+						var mesh = new THREE.Mesh( geometry, material );
+		
+
+						mesh.rotation.y = Math.PI/2;
+
+						mesh.matrixAutoUpdate = false;
+						mesh.updateMatrix();
+
+						mesh.userData.bondLengthShort = bondLength + "px";
+						mesh.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+						mesh.userData.joint = joint;
+
+						joint.add( mesh );
+						selectedDimension.add( joint );
+
+
+						if (selectedDimension == alphaDimension)	
+							alphaObjects.push( mesh );
+						if (selectedDimension == betaDimension)
+							betaObjects.push( mesh );						
+						if (selectedDimension == gammaDimension)	
+							gammaObjects.push( mesh );
+						if (selectedDimension == deltaDimension)
+							deltaObjects.push( mesh );
+
+						var geometry = new THREE.CylinderGeometry( 4, 4, bondLength, 4, 1 );
+						var material =  new THREE.MeshLambertMaterial( { color:0xffffff, shading: THREE.FlatShading, transparent: true } );
+						var mesh2 = new THREE.Mesh( geometry, material );
+
+						
+						mesh2.matrixAutoUpdate = false;
+						mesh2.updateMatrix();
+
+						mesh2.userData.bondLengthShort = bondLength + "px";
+						mesh2.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+						mesh2.userData.joint = joint;
+
+						joint2.add( mesh2 );
+						selectedDimension.add( joint2 );
+
+
+						if (selectedDimension == alphaDimension)	
+							alphaObjects.push( mesh2 );
+						if (selectedDimension == betaDimension)
+							betaObjects.push( mesh2 );						
+						if (selectedDimension == gammaDimension)	
+							gammaObjects.push( mesh2 );
+						if (selectedDimension == deltaDimension)
+							deltaObjects.push( mesh2 );
+						break;
+					}
+					*/
+						
+
+					render();
+					if (loadThird)
+					{
+						loadThird = false;
+						loadRCSB_PDBFile("molecules/bdna.pdb" , gammaDimension);	
+					}
+					if (loadSecond)
+					{
+						loadSecond = false;
+						loadThird = true;
+						loadRCSB_PDBFile("molecules/bdna.pdb" , betaDimension);	
+					}
+
+
+					
+
+				});
+			}
+
+			function clearSelectedDimensionObjects()
+			{
+
+				//Clear the objects array
+				if (selectedDimension == alphaDimension)
+				{
+					console.log('alpha clear, ', alphaObjects);
+					for ( var i = 0; i < alphaObjects.length; i ++ ) {
+
+						var object = alphaObjects[ i ];
+						console.log('alpha clear object - ', alphaObjects);
+						object.parent.remove( object );
+
+					}
+					alphaObjects = [];
+					scene.add( alphaTransformControl );
+				}
+				if (selectedDimension == betaDimension)
+				{
+					console.log('beta clear');
+					for ( var i = 0; i < betaObjects.length; i ++ ) {
+
+						var object = betaObjects[ i ];
+						object.parent.remove( object );
+
+					}
+					betaObjects = [];
+					scene.add( betaTransformControl );
+				}
+				if (selectedDimension == gammaDimension)
+				{
+					console.log('gamma clear');
+					for ( var i = 0; i < gammaObjects.length; i ++ ) {
+
+						var object = gammaObjects[ i ];
+						object.parent.remove( object );
+
+					}
+					gammaObjects = [];
+					scene.add( gammaTransformControl );
+				}
+				if (selectedDimension == deltaDimension)
+				{
+					console.log('delta clear');
+					for ( var i = 0; i < deltaObjects.length; i ++ ) {
+
+						var object = deltaObjects[ i ];
+						object.parent.remove( object );
+
+					}
+					deltaObjects = [];
+					scene.add( deltaTransformControl );
+				}
+			}
+
+
+			function loadPubChemMolecule( pubChem_3djson , destinationDimension)
+			{
+
+
+
+				//------------
+				// Clear out old objects from the DOM
+				if (!destinationDimension)
+				{
+					console.log('Need destinationDimension... defaulting to alpha');
+				}
+				else
+				{
+					console.log("Loading molecule into destinationDimension - ", destinationDimension);	
+					selectedDimension = destinationDimension;
+				}
+					
+
+				clearSelectedDimensionObjects();
+
+				//------------
+
+				loader.pubChem_load( pubChem_3djson, function ( geometry, geometryBonds, order ) {
+					
+
+
+					var offset = THREE.GeometryUtils.center( geometry );
+					geometryBonds.applyMatrix( new THREE.Matrix4().makeTranslation( offset.x, offset.y, offset.z ) );
+
+					for ( var i = 0; i < geometry.vertices.length; i ++ ) {
+
+						var position = geometry.vertices[ i ];
+						var color = geometry.colors[ i ];
+						//console.log('geometry -', geometry);
+						//console.log('geometryBonds -', geometryBonds);
+						//console.log('geometryColor -', color);
+
+						var element = geometry.elements[ i ];
+						
+						//WebGL way of adding a sprite atom
+						
+						var geometry2 = new THREE.SphereGeometry( getAtomSize(element), 32, 32 );
+
+						var material =  new THREE.MeshLambertMaterial( { color:color.getHex(), shading: THREE.FlatShading , transparent: true} );
+						//var material = new THREE.MeshBasicMaterial( {color: color.getHex()} );
+						var sphere = new THREE.Mesh( geometry2, material );
+						material.opacity = 0.7;
+						sphere.position.copy( position );
+						sphere.position.multiplyScalar( 100 );
+						
+
+						selectedDimension.add( sphere );
+
+						if (selectedDimension == alphaDimension)	
+							alphaObjects.push( sphere );
+						if (selectedDimension == betaDimension)
+							betaObjects.push( sphere );						
+						if (selectedDimension == gammaDimension)	
+							gammaObjects.push( sphere );
+						if (selectedDimension == deltaDimension)
+							deltaObjects.push( sphere );
+
+						//console.log('round1');
+					}
+
+					for ( var i = 0; i < geometryBonds.vertices.length; i += 2 ) {
+
+						var start = geometryBonds.vertices[ i ];
+						var end = geometryBonds.vertices[ i + 1 ];
+
+						start.multiplyScalar( 100 );
+						end.multiplyScalar( 100 );
+
+						tmpVec1.subVectors( end, start );
+						var bondLength = tmpVec1.length();
+
+
+						var axis = tmpVec2.set( 0, 1, 0 ).cross( tmpVec1 );
+						var radians = Math.acos( tmpVec3.set( 0, 1, 0 ).dot( tmpVec4.copy( tmpVec1 ).normalize() ) );
+
+						var objMatrix = new THREE.Matrix4().makeRotationAxis( axis.normalize(), radians );
+							
+
+						//console.log('geometryBonds = ', geometryBonds);
+						//console.log('order = ', order[i]);
+						//console.log('i =', i/2);
+
+
+						switch (order[i/2])
+						{
+							case 'single':
+							{
+								// One Bond
+								//console.log('single bond rudy');
+								var bond = document.createElement( 'div' );
+								bond.className = "bond";
+								bond.style.height = bondLength + "px";
+
+								var bond2 = document.createElement( 'div' );
+								bond2.className = "bond";
+								bond2.style.height = bondLength + "px";
+
+								var joint = new THREE.Object3D( bond );
+								joint.position.copy( start );
+								joint.position.lerp( end, 0.5 );
+
+								joint.matrix.copy( objMatrix );
+								joint.rotation.setFromRotationMatrix( joint.matrix, joint.rotation.order );
+
+								joint.matrixAutoUpdate = false;
+								joint.updateMatrix();
+
+
+								var joint2 = new THREE.Object3D( bond2 );
+								joint2.position.copy( start );
+								joint2.position.lerp( end, 0.5 );
+
+								joint2.matrix.copy( objMatrix );
+								joint2.rotation.setFromRotationMatrix( joint2.matrix, joint2.rotation.order );
+
+								joint2.matrixAutoUpdate = false;
+								joint2.updateMatrix();
+
+
+
+								var geometry = new THREE.CylinderGeometry( 4, 4, bondLength, 4, 1 );
+								var material =  new THREE.MeshLambertMaterial( { color:0xffffff, shading: THREE.FlatShading, transparent: true } );
+								var mesh = new THREE.Mesh( geometry, material );
+				
+
+								//var object = new THREE.CSS3DObject( bond );
+								mesh.rotation.y = Math.PI/2;
+
+								mesh.matrixAutoUpdate = false;
+								mesh.updateMatrix();
+
+								mesh.userData.bondLengthShort = bondLength + "px";
+								mesh.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								mesh.userData.joint = joint;
+
+								joint.add( mesh );
+								selectedDimension.add( joint );
+
+
+								if (selectedDimension == alphaDimension)	
+									alphaObjects.push( mesh );
+								if (selectedDimension == betaDimension)
+									betaObjects.push( mesh );						
+								if (selectedDimension == gammaDimension)	
+									gammaObjects.push( mesh );
+								if (selectedDimension == deltaDimension)
+									deltaObjects.push( mesh );
+
+								var geometry = new THREE.CylinderGeometry( 4, 4, bondLength, 4, 1 );
+								var material =  new THREE.MeshLambertMaterial( { color:0xffffff, shading: THREE.FlatShading, transparent: true } );
+								var mesh2 = new THREE.Mesh( geometry, material );
+
+								//var object2 = new THREE.CSS3DObject( bond2 );
+								//object2.rotation.y = Math.PI/2;
+								mesh2.matrixAutoUpdate = false;
+								mesh2.updateMatrix();
+
+								mesh2.userData.bondLengthShort = bondLength + "px";
+								mesh2.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								mesh2.userData.joint = joint;
+
+								joint2.add( mesh2 );
+								selectedDimension.add( joint2 );
+
+
+								if (selectedDimension == alphaDimension)	
+									alphaObjects.push( mesh2 );
+								if (selectedDimension == betaDimension)
+									betaObjects.push( mesh2 );						
+								if (selectedDimension == gammaDimension)	
+									gammaObjects.push( mesh2 );
+								if (selectedDimension == deltaDimension)
+									deltaObjects.push( mesh2 );
+								break;
+							}
+							case 'double':
+							{
+								// One Bond
+
+								//console.log('double bond rudy');
+								var bond = document.createElement( 'div' );
+								bond.className = "bond";
+								bond.style.height = bondLength + "px";
+
+								var bond2 = document.createElement( 'div' );
+								bond2.className = "bond";
+								bond2.style.height = bondLength + "px";
+
+								var joint = new THREE.Object3D( bond );
+								joint.position.copy( start );
+								joint.position.lerp( end, 0.5 );
+
+								joint.matrix.copy( objMatrix );
+								joint.rotation.setFromRotationMatrix( joint.matrix, joint.rotation.order );
+
+								joint.matrixAutoUpdate = false;
+								joint.updateMatrix();
+
+
+								var joint2 = new THREE.Object3D( bond2 );
+								joint2.position.copy( start );
+								joint2.position.lerp( end, 0.5 );
+
+								joint2.matrix.copy( objMatrix );
+								joint2.rotation.setFromRotationMatrix( joint2.matrix, joint2.rotation.order );
+
+								joint2.matrixAutoUpdate = false;
+								joint2.updateMatrix();
+
+
+								var geometry = new THREE.CylinderGeometry( 4, 4, bondLength, 4, 1 );
+								var material =  new THREE.MeshLambertMaterial( { color:0xffffff, shading: THREE.FlatShading, transparent: true } );
+								var object2 = new THREE.Mesh( geometry, material );								//object2.rotation.y = Math.PI/2;
+								object2.position.x -= 10;
+								object2.matrixAutoUpdate = false;
+								object2.updateMatrix();
+
+								object2.userData.bondLengthShort = bondLength + "px";
+								object2.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object2.userData.joint = joint;
+
+								joint2.add( object2 );
+								selectedDimension.add( joint2 );
+
+								if (selectedDimension == alphaDimension)	
+									alphaObjects.push( object2 );
+								if (selectedDimension == betaDimension)
+									betaObjects.push( object2 );						
+								if (selectedDimension == gammaDimension)	
+									gammaObjects.push( object2 );
+								if (selectedDimension == deltaDimension)
+									deltaObjects.push( object2 );
+
+
+
+								// Another Bond
+
+								var bond = document.createElement( 'div' );
+								bond.className = "bond";
+								bond.style.height = bondLength + "px";
+
+								var bond2 = document.createElement( 'div' );
+								bond2.className = "bond";
+								bond2.style.height = bondLength + "px";
+
+								var joint = new THREE.Object3D( bond );
+								joint.position.copy( start );
+								joint.position.lerp( end, 0.5 );
+
+								joint.matrix.copy( objMatrix );
+								joint.rotation.setFromRotationMatrix( joint.matrix, joint.rotation.order );
+
+								joint.matrixAutoUpdate = false;
+								joint.updateMatrix();
+
+
+								var joint2 = new THREE.Object3D( bond2 );
+								joint2.position.copy( start );
+								joint2.position.lerp( end, 0.5 );
+
+								joint2.matrix.copy( objMatrix );
+								joint2.rotation.setFromRotationMatrix( joint2.matrix, joint2.rotation.order );
+
+								joint2.matrixAutoUpdate = false;
+								joint2.updateMatrix();
+
+
+								var geometry = new THREE.CylinderGeometry( 4, 4, bondLength, 4, 1 );
+								var material =  new THREE.MeshLambertMaterial( { color:0xffffff, shading: THREE.FlatShading, transparent: true } );
+								var object2 = new THREE.Mesh( geometry, material );								//object2.rotation.y = Math.PI/2;
+								//object2.rotation.y = Math.PI/2;
+								object2.position.x += 10;
+								object2.matrixAutoUpdate = false;
+								object2.updateMatrix();
+
+								object2.userData.bondLengthShort = bondLength + "px";
+								object2.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object2.userData.joint = joint;
+
+								joint2.add( object2 );
+								selectedDimension.add( joint2 );
+
+
+								if (selectedDimension == alphaDimension)	
+									alphaObjects.push( object2 );
+								if (selectedDimension == betaDimension)
+									betaObjects.push( object2 );						
+								if (selectedDimension == gammaDimension)	
+									gammaObjects.push( object2 );
+								if (selectedDimension == deltaDimension)
+									deltaObjects.push( object2 );
+							}
+							break;
+							case 'triple':
+							{
+								// One Bond
+								//console.log('triple bond rudy');
+								var bond = document.createElement( 'div' );
+								bond.className = "bond";
+								bond.style.height = bondLength + "px";
+
+								var bond2 = document.createElement( 'div' );
+								bond2.className = "bond";
+								bond2.style.height = bondLength + "px";
+
+								var joint = new THREE.Object3D( bond );
+								joint.position.copy( start );
+								joint.position.lerp( end, 0.5 );
+
+								joint.matrix.copy( objMatrix );
+								joint.rotation.setFromRotationMatrix( joint.matrix, joint.rotation.order );
+
+								joint.matrixAutoUpdate = false;
+								joint.updateMatrix();
+
+
+								var joint2 = new THREE.Object3D( bond2 );
+								joint2.position.copy( start );
+								joint2.position.lerp( end, 0.5 );
+
+								joint2.matrix.copy( objMatrix );
+								joint2.rotation.setFromRotationMatrix( joint2.matrix, joint2.rotation.order );
+
+								joint2.matrixAutoUpdate = false;
+								joint2.updateMatrix();
+
+								var geometry = new THREE.CylinderGeometry( 4, 4, bondLength, 4, 1 );
+								var material =  new THREE.MeshLambertMaterial( { color:0xffffff, shading: THREE.FlatShading, transparent: true } );
+								var object2 = new THREE.Mesh( geometry, material );
+
+
+								//object2.rotation.y = Math.PI/2;
+								object2.matrixAutoUpdate = false;
+								object2.updateMatrix();
+
+								object2.userData.bondLengthShort = bondLength + "px";
+								object2.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object2.userData.joint = joint;
+
+								joint2.add( object2 );
+								selectedDimension.add( joint2 );
+								if (selectedDimension == alphaDimension)	
+									alphaObjects.push( object2 );
+								if (selectedDimension == betaDimension)
+									betaObjects.push( object2 );						
+								if (selectedDimension == gammaDimension)	
+									gammaObjects.push( object2 );
+								if (selectedDimension == deltaDimension)
+									deltaObjects.push( object2 );
+
+
+
+								// One Bond
+
+								var bond = document.createElement( 'div' );
+								bond.className = "bond";
+								bond.style.height = bondLength + "px";
+
+								var bond2 = document.createElement( 'div' );
+								bond2.className = "bond";
+								bond2.style.height = bondLength + "px";
+
+								var joint = new THREE.Object3D( bond );
+								joint.position.copy( start );
+								joint.position.lerp( end, 0.5 );
+
+								joint.matrix.copy( objMatrix );
+								joint.rotation.setFromRotationMatrix( joint.matrix, joint.rotation.order );
+
+								joint.matrixAutoUpdate = false;
+								joint.updateMatrix();
+
+
+								var joint2 = new THREE.Object3D( bond2 );
+								joint2.position.copy( start );
+								joint2.position.lerp( end, 0.5 );
+
+								joint2.matrix.copy( objMatrix );
+								joint2.rotation.setFromRotationMatrix( joint2.matrix, joint2.rotation.order );
+
+								joint2.matrixAutoUpdate = false;
+								joint2.updateMatrix();
+
+
+
+								var geometry = new THREE.CylinderGeometry( 4, 4, bondLength, 4, 1 );
+								var material =  new THREE.MeshLambertMaterial( { color:0xffffff, shading: THREE.FlatShading, transparent: true } );
+								var object2 = new THREE.Mesh( geometry, material );								//object2.rotation.y = Math.PI/2;
+								object2.position.x -= 20;
+								object2.matrixAutoUpdate = false;
+								object2.updateMatrix();
+
+								object2.userData.bondLengthShort = bondLength + "px";
+								object2.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object2.userData.joint = joint;
+
+								joint2.add( object2 );
+								selectedDimension.add( joint2 );
+
+								if (selectedDimension == alphaDimension)	
+									alphaObjects.push( object2 );
+								if (selectedDimension == betaDimension)
+									betaObjects.push( object2 );						
+								if (selectedDimension == gammaDimension)	
+									gammaObjects.push( object2 );
+								if (selectedDimension == deltaDimension)
+									deltaObjects.push( object2 );
+
+
+
+
+
+								// Another Bond
+
+								var bond = document.createElement( 'div' );
+								bond.className = "bond";
+								bond.style.height = bondLength + "px";
+
+								var bond2 = document.createElement( 'div' );
+								bond2.className = "bond";
+								bond2.style.height = bondLength + "px";
+
+								var joint = new THREE.Object3D( bond );
+								joint.position.copy( start );
+								joint.position.lerp( end, 0.5 );
+
+								joint.matrix.copy( objMatrix );
+								joint.rotation.setFromRotationMatrix( joint.matrix, joint.rotation.order );
+
+								joint.matrixAutoUpdate = false;
+								joint.updateMatrix();
+
+
+								var joint2 = new THREE.Object3D( bond2 );
+								joint2.position.copy( start );
+								joint2.position.lerp( end, 0.5 );
+
+								joint2.matrix.copy( objMatrix );
+								joint2.rotation.setFromRotationMatrix( joint2.matrix, joint2.rotation.order );
+
+								joint2.matrixAutoUpdate = false;
+								joint2.updateMatrix();
+
+
+								var geometry = new THREE.CylinderGeometry( 4, 4, bondLength, 4, 1 );
+								var material =  new THREE.MeshLambertMaterial( { color:0xffffff, shading: THREE.FlatShading, transparent: true } );
+								var object2 = new THREE.Mesh( geometry, material );
+								object2.position.x += 20;
+								object2.matrixAutoUpdate = false;
+								object2.updateMatrix();
+
+								object2.userData.bondLengthShort = bondLength + "px";
+								object2.userData.bondLengthFull = ( bondLength + 55 ) + "px";
+
+								object2.userData.joint = joint;
+
+								joint2.add( object2 );
+								selectedDimension.add( joint2 );
+
+								if (selectedDimension == alphaDimension)	
+									alphaObjects.push( object2 );
+								if (selectedDimension == betaDimension)
+									betaObjects.push( object2 );						
+								if (selectedDimension == gammaDimension)	
+									gammaObjects.push( object2 );
+								if (selectedDimension == deltaDimension)
+									deltaObjects.push( object2 );
+							}
+						}
+						
+
+					}
+
+					render();
+
+				} );
+
+			}
+
+
+
+			$(document).ready(function() {  
+			    
+				//----
+				//pubChem_printJSON(2244); //Test that you can print from the server.... unit tests #1
+				//----
+
+				$('#searchContainer').focus();
+
+
+				$('#pubChemSearchForm').submit(function () {
+				 //console.log('userDidEnter in pubChemSearchForm');
+				 process_pubChem_compoundSearch();
+				 return false;
+				});
+
+			    $('#submitButton').click(function() {
+					//console.log('submit clicked - ' + $("#field").val());
+					process_pubChem_compoundSearch();
+				});
+
+				$('#field').submit(function () {
+					//sendContactForm();
+					//console.log('Submit without refreshing');
+					return false;
+				});
+
+			    // if text input field value is not empty show the "X" button
+				$("#field").keyup(function() {
+					//console.log('search field keyup - ' + $("#field").val());
+					$("#x").fadeIn();
+					if ($.trim($("#field").val()) == "") {
+						$("#x").fadeOut();
+					}
+
+				});
+					// on click of "X", delete input field value and hide "X"
+				$("#x").click(function() {
+					//console.log('X clicked');
+					$("#field").val("");
+					$(this).hide();
+				});
+
+
+			});  
+
+			var alphaDimension;
+			var betaDimension;
+			var gammaDimension;
+			var deltaDimension;
+
+			var container, stats;
+			var camera, scene, renderer, particles, geometry, materials = [], parameters, i, h, color, sprite, size;
+			var mouseX = 0, mouseY = 0;
+			
+			var alphaTransformControl;
+			var betaTransformControl;
+			var gammaTransformControl;
+			var deltaTransformControl;
+
+			var objects = [];
+			var tmpVec1 = new THREE.Vector3();
+			var tmpVec2 = new THREE.Vector3();
+			var tmpVec3 = new THREE.Vector3();
+			var tmpVec4 = new THREE.Vector3();
+
+
+			var loader = new THREE.PubChem_3DJSONLoader();
+			var pdbLoader = new THREE.PDBLoader();
+
+			var colorSpriteMap = {};
+			var baseSprite = document.createElement( 'img' );
+
+			var animationTimer;
+
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+
+			var loadSecond = true;
+			var loadThird = false;
+
+			
+
+			init();
+			animate();
+			//closeFileWindows(0);
+			
+			$('#blog_content').fadeOut(0);
+			$('#home_content').fadeIn(1200);
+			$('#business_solutions_content').fadeOut(0);
+			$('#dipole_content').fadeOut(0);	
+			
+			
+			function expand_horizontal(element) {
+				
+				var target = document.getElementById(element);
+				var offsetHeight = target.style.width;
+				var scrollHeight = 30;
+				animationTimer = setTimeout('expand(\''+element+'\')',8);
+
+				console.log(scrollHeight);
+				if (offsetHeight < scrollHeight)
+				{
+					offsetHeight += 1;
+				}
+				else
+				{
+					clearTimeout(animationTimer);
+				}
+				
+				target.style.width = offsetHeight+"px";
+
+			}
+
+			function expand_vertical(element) {
+				
+				var target = document.getElementById(element);
+				var offsetHeight = target.offsetHeight;
+				var scrollHeight = target.scrollHeight;
+				animationTimer = setTimeout('expand(\''+element+'\')',8);
+
+				console.log(scrollHeight);
+				if (offsetHeight < scrollHeight)
+				{
+					offsetHeight += 1;
+				}
+				else
+				{
+					clearTimeout(animationTimer);
+				}
+				
+				target.style.height = offsetHeight+"px";
+
+			}
+
+			function expand(element) {
+				
+				var target = document.getElementById(element);
+				var offsetHeight = target.offsetHeight;
+				var scrollHeight = target.scrollHeight;
+				animationTimer = setTimeout('expand(\''+element+'\')',8);
+
+				console.log(scrollHeight);
+				if (offsetHeight < scrollHeight)
+				{
+					offsetHeight += 1;
+				}
+				else
+				{
+					clearTimeout(animationTimer);
+				}
+				
+				target.style.height = offsetHeight+"px";
+
+			}
+
+			function retract_horizontal(element) {
+				var target = document.getElementById(element);
+				var offsetHeight = target.offsetHeight;
+				animationTimer = setTimeout('retract(\''+element+'\')',8);
+				
+				if(offsetHeight > 0){
+					offsetHeight -= 1;
+				}
+				if (offsetHeight < 1)
+				{
+					offsetHeight = 0;
+					clearTimeout(animationTimer);
+				}
+				target.style.height = offsetHeight+"px";
+			}
+
+			function retract(element) {
+				var target = document.getElementById(element);
+				var offsetHeight = target.offsetHeight;
+				animationTimer = setTimeout('retract(\''+element+'\')',8);
+				
+				if(offsetHeight > 0){
+					offsetHeight -= 1;
+				}
+				if (offsetHeight < 1)
+				{
+					offsetHeight = 0;
+					clearTimeout(animationTimer);
+				}
+				target.style.height = offsetHeight+"px";
+			}
+
+
+			function init() {
+
+				container = document.getElementById('webgl_div');
+
+				//camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 2000 );
+				//camera.position.z = 1000;
+				camera = new THREE.PerspectiveCamera( 60, 120 / 900, 1, 100000 );
+				camera.position.z = 1500;
+
+
+
+
+				scene = new THREE.Scene();
+				var color = new THREE.Color();
+				color.setRGB( 1, 1, 1 );
+				scene.backgroundColor = color;
+				
+
+				scene.fog = new THREE.FogExp2( 0x000000, 0.00003 );
+				
+				var maxX = 660;
+				var maxY = 400;
+
+
+				var alphaMolecule = getUrlVars()["alpha"];
+				var betaMolecule = getUrlVars()["beta"];
+				var gammaMolecule = getUrlVars()["gamma"];
+				var deltaMolecule = getUrlVars()["delta"];
+
+				var drawAlpha = false, drawBeta = false, drawGamma = false, drawDelta = false;
+
+				if ( typeof alphaMolecule !== 'undefined' && alphaMolecule != 'undefined' )
+					drawAlpha = true;
+				if ( typeof betaMolecule !== 'undefined' && betaMolecule != 'undefined' )
+					drawBeta = true;
+				if ( typeof gammaMolecule !== 'undefined' && gammaMolecule != 'undefined' )
+					drawGamma = true;
+				if ( typeof deltaMolecule !== 'undefined' && deltaMolecule != 'undefined' )
+					drawDelta = true;
+
+
+				alphaDimension = new THREE.Object3D();
+				scene.add( alphaDimension );
+
+				betaDimension = new THREE.Object3D();
+				scene.add( betaDimension );
+
+				gammaDimension = new THREE.Object3D();
+				scene.add( gammaDimension );
+
+				deltaDimension = new THREE.Object3D();
+				scene.add( deltaDimension );
+
+
+				selectedDimension = alphaDimension;
+				selectedObjectsArray = alphaObjects;
+
+				
+				if (detect_mobile_device())
+					console.log('mobile version');
+				else
+					loadRCSB_PDBFile("molecules/bdna.pdb" , alphaDimension);
+
+				// lights
+
+				light = new THREE.DirectionalLight( 0xffffff );
+				light.position.set( 1, 1, 1 );
+				scene.add( light );
+
+				light = new THREE.DirectionalLight( 0xffffff );
+				light.position.set( -1, -1, -1 );
+				scene.add( light );
+
+				light = new THREE.AmbientLight( 0x444444 );
+				scene.add( light );
+
+				light = new THREE.AmbientLight( 0x444444 );
+				light.position.set( 0, 100, 0 );
+				scene.add( light );
+
+				
+
+				renderer = new THREE.WebGLRenderer( { clearAlpha: 1 } );
+				renderer.setSize( 120, 900 );
+				renderer.setClearColorHex( 0xFFFFFF, 1 );
+
+				renderer.domElement.id = "webgl_renderer_dom_element";
+				container.appendChild( renderer.domElement );
+
+				// EVENTS
+				THREEx.WindowResize(renderer, camera);
+				THREEx.FullScreen.bindKey({ charCode : '`'.charCodeAt(0) });
+				
+				
+				window.addEventListener( 'keydown', function ( event ) {
+	            //console.log(event.keyCode);
+
+	            switch ( event.keyCode ) {
+	              case 49: //1
+	              	
+	              	break;
+	              case 50: //2
+		            
+	              	break;
+	              case 51: //3
+		            
+		            break;
+	              case 52: //4
+	              	
+		            break;
+	              case 82: //R
+    				
+    				break;
+
+	            }
+    		});
+				
+				
+
+				
+				// Stats for OpenGL
+				/*
+				stats = new Stats();
+				stats.domElement.style.position = 'absolute';
+				stats.domElement.style.top = '0px';
+				container.appendChild( stats.domElement );
+				*/
+				/*
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+				document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+				*/
+				//
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+
+			function onWindowResize() {
+
+				windowHalfX = window.innerWidth / 2;
+				windowHalfY = window.innerHeight / 2;
+
+
+				//document.getElementById("webgl_renderer_dom_element").style.width = 100;
+				//document.getElementById("webgl_renderer_dom_element").style.width = 200;
+				camera.aspect = 120 / 900;
+				camera.updateProjectionMatrix();
+
+				//controls.handleResize();
+				//renderer.setSize( 120, 900 );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function onDocumentMouseMove( event ) {
+
+				mouseX = event.clientX - windowHalfX;
+				mouseY = event.clientY - windowHalfY;
+
+			}
+
+			function onDocumentTouchStart( event ) {
+
+				if ( event.touches.length === 1 ) {
+
+					event.preventDefault();
+
+					mouseX = event.touches[ 0 ].pageX - windowHalfX;
+					mouseY = event.touches[ 0 ].pageY - windowHalfY;
+
+				}
+
+			}
+
+			function onDocumentTouchMove( event ) {
+
+				if ( event.touches.length === 1 ) {
+
+					event.preventDefault();
+
+					mouseX = event.touches[ 0 ].pageX - windowHalfX;
+					mouseY = event.touches[ 0 ].pageY - windowHalfY;
+
+				}
+
+			}
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				//controls.update();
+
+				render();
+				//stats.update();
+
+			}
+
+			function render() {
+
+				var time = Date.now() * 0.00005;
+
+				//camera.position.x += ( mouseX - camera.position.x ) * 0.05;
+				//camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
+
+				//camera.lookAt( scene.position );
+				alphaDimension.rotation.x = 3.141596/2.0;
+ 				alphaDimension.rotation.z = time * -5.7;
+ 				alphaDimension.position.x = 0;
+ 				alphaDimension.position.z = -12000;
+				alphaDimension.position.y = 4000;
+
+				betaDimension.rotation.x = 3.141596/2.0;
+ 				betaDimension.rotation.z = time * -5.7 + 3.141596/6.0;
+ 				betaDimension.position.x = 0;
+ 				betaDimension.position.z = -12000;
+ 				betaDimension.position.y = -000;
+
+				gammaDimension.rotation.x = 3.141596/2.0;
+ 				gammaDimension.rotation.z = time * -5.7 + 3.141596*2/6.0;
+ 				gammaDimension.position.x = 0;
+ 				gammaDimension.position.z = -12000;
+ 				gammaDimension.position.y = -4000;
+
+
+				//alphaTransformControl.update();
+				//betaTransformControl.update();
+				//gammaTransformControl.update();
+				//deltaTransformControl.update();
+				
+				renderer.render( scene, camera );
+
+			}
+
+
+		</script>
+	</body>
+</html>
