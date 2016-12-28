@@ -15,7 +15,7 @@
 			}
 
 			body {
-				background-color: #FFFFFF;
+				background-color: #000;
 				margin: 0px;
 				overflow: hidden;
 				font-family:Monospace;
@@ -96,7 +96,7 @@
 			.wrapper {
 				position:absolute;
 				width:100%;
-				background: url() no-repeat #FFFFFF center; 
+				background: url() no-repeat #000 center; 
 
 			}
 			#white_background {
@@ -105,7 +105,7 @@
 				left:0px;
 				width:100%;
 				height:100%;
-				background: url() no-repeat #FFFFFF center; 
+				background: url() no-repeat #000 center; 
 			}
 
 
@@ -229,7 +229,7 @@
 			
 			
 			<div id="info">	
-				<img id="logo" src="textures/sprites/OrbitusRobotics_logo_black.png" alt="OrbitusBiomedical"></img></a>
+				<img id="logo" src="textures/sprites/OrbitusRobotics_logo_holo.png" alt="OrbitusBiomedical"></img></a>
 			</div>
 
 
@@ -1602,7 +1602,7 @@
 
 				renderer = new THREE.WebGLRenderer( { clearAlpha: 1 } );
 				renderer.setSize( 120, 900 );
-				renderer.setClearColorHex( 0xFFFFFF, 1 );
+				renderer.setClearColorHex( 0x000000, 1 );
 
 				renderer.domElement.id = "webgl_renderer_dom_element";
 				container.appendChild( renderer.domElement );
